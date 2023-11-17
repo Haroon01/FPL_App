@@ -25,6 +25,10 @@ class FantasyPL {
         return this.execute("/fixtures/")
     }
 
+    getAllPlayers(){
+        return this.execute("/bootstrap-static/")
+    }
+
 
 }
 
