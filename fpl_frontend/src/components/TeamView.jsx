@@ -3,13 +3,19 @@ import PlayerBlank from "./PlayerBlank";
 
 function TeamView(){
     const teamViewStyle = {
-        height: "600px",
+        height: "100%",
         width: "400px",
-        backgroundColor: "lightblue",
+        backgroundColor: "5C8374",
+        padding: "20px"
     }
+    const rowStyle = {
+        marginBottom: "50px",
+        //marginTop: "50px"
+    }
+
     return (
         <Container style={teamViewStyle}>
-            <Row>
+            <Row style={rowStyle}>
                 <Col>
                     <PlayerBlank/>
                 </Col> 
@@ -17,7 +23,7 @@ function TeamView(){
                     <PlayerBlank/>
                 </Col> 
             </Row>
-            <Row>
+            <Row style={rowStyle}>
                 <Col>
                     <PlayerBlank/>
                 </Col> 
@@ -35,7 +41,7 @@ function TeamView(){
                 </Col> 
             
             </Row>
-            <Row>
+            <Row style={rowStyle}>
                 <Col>
                     <PlayerBlank/>
                 </Col> 
@@ -53,7 +59,7 @@ function TeamView(){
                 </Col> 
             
             </Row>
-            <Row>
+            <Row style={rowStyle}>
                 <Col>
                     <PlayerBlank/>
                 </Col> 

@@ -1,15 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from "./App"
+import Home from './pages/Home'
+import Header from './components/Header';
+import reportWebVitals from './reportWebVitals';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; // this css needed for bootstrap-react
-
+import { BrowserRouter as Router, Router, Switch } from "react-router-dom"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
+const style = {
+  marginTop:"56px"
+}
 root.render(
   <React.StrictMode>
-    <App />    
+    <Header />
+    <div style={style}>
+      <Home />
+    </div>
+    
   </React.StrictMode>
 );
 

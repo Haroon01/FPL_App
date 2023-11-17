@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 
-function PlayerBlank(){
+function PlayerBlank(props){
     const playerBlankStyle = {
         height: "50px",
         width: "50px"
@@ -12,7 +12,7 @@ function PlayerBlank(){
     }
     return (
         <div style={containerStyle}>
-            <Button variant="outline-light" style={playerBlankStyle}>
+            <Button variant="outline-light" style={playerBlankStyle} onClick={props.onClick}>
                 +
             </Button>
         </div>
