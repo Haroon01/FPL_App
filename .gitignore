@@ -1,0 +1,25 @@
+fpl_backend/node_modules
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+fpl_frontend/node_modules
+fpl_frontend/.pnp
+fpl_frontend/.pnp.js
+
+# testing
+fpl_frontend/coverage
+
+# production
+fpl_frontend/build
+
+# misc
+fpl_frontend/.DS_Store
+fpl_frontend/.env.local
+fpl_frontend/.env.development.local
+fpl_frontend/.env.test.local
+fpl_frontend/.env.production.local
+
+fpl_frontend/npm-debug.log*
+fpl_frontend/yarn-debug.log*
+fpl_frontend/yarn-error.log*
