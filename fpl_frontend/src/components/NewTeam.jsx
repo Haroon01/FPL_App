@@ -16,6 +16,7 @@ function NewTeam(){
             try{
                 await axios.get("http://localhost:3001/api/players").then((response) => {
                     setPlayers(response.data)
+                    //console.log(response.data)
                 })
             } finally {
                 setLoading(false)
@@ -23,7 +24,7 @@ function NewTeam(){
         }
         setShowModal(true)
         console.log(players)
-    }
+    } // handleShowModal
     const handleHideModal = ()=>{setShowModal(false)}
 
     // useEffect(() => {
@@ -116,7 +117,7 @@ function NewTeam(){
                             <h1>loading</h1>
                         ) : (
                             players.map((player) => {
-                                <p1>{player.first_name}</p1>
+                                <p1>{players}</p1>
                             })
                         )
                     }
