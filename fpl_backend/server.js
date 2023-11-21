@@ -23,9 +23,13 @@ app.use(cors())
 //         // }
 //     })
 // })
-function syncPlayers(){
-    let a = fpl.getAllPlayers();
-    console.log(a)
+async function syncPlayers(){
+    let a = await fpl.getAllPlayers();
+    let b = a.elements
+    for (let i = 0; i < b.length; i++){
+        console.log(b[i])
+        break
+    }
 }
 sequelize.sync({ force: false }) // true if i want to drop tables and start over
     .then(() => {
