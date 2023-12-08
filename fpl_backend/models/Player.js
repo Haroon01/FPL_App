@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../database")
 
-const User = sequelize.define('Player', {
+const Player = sequelize.define('Player', {
     id: {
         allowNull: false,
         autoIncrement: true,
@@ -24,6 +24,26 @@ const User = sequelize.define('Player', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    chance_of_playing_next_round: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    chance_of_playing_this_round: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    form: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    selected_by_percent: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    now_cost: { // e.g. 55 = £5.5m
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     // club_id: { // foreign key!
     //     type: DataTypes.STRING,
     //     allowNull: false
@@ -31,15 +51,14 @@ const User = sequelize.define('Player', {
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     },
     updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
     }
 });
 
-module.exports = User;
+module.exports = Player;
 
 

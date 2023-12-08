@@ -1,4 +1,4 @@
-import { Col, Row, Container, Modal } from "react-bootstrap";
+import { Col, Row, Container, Modal, Table } from "react-bootstrap";
 import PlayerBlank from "./PlayerBlank";
 import {useState, useEffect} from 'react'
 import axios from 'axios'
@@ -14,25 +14,16 @@ function NewTeam(){
         if(!players.length && !loading){
             setLoading(true)
             try{
-                await axios.get("http://localhost:3001/api/players").then((response) => {
-                    setPlayers(response.data)
-                    //console.log(response.data)
-                })
+                let response = await axios.get("http://localhost:3001/api/players")
+                //console.log(response.data)
+                setPlayers(response.data)
             } finally {
                 setLoading(false)
             }
         }
         setShowModal(true)
-        console.log(players)
     } // handleShowModal
     const handleHideModal = ()=>{setShowModal(false)}
-
-    // useEffect(() => {
-    //     axios.get("http://localhost:3001/api/players").then((response) => {
-    //         setPlayers(response.data)
-    //     })
-    // }, [])
-
 
 
     const newTeamStyle = {
@@ -46,6 +37,24 @@ function NewTeam(){
         marginBottom: "50px",
         //marginTop: "50px"
     }
+
+    const tableStyles = {
+        container: {
+          maxHeight: "400px",
+          overflowY: "auto",
+        },
+        table: {
+          width: "100%",
+          overflow: "auto",
+        },
+        th: {
+          position: "-webkit-sticky",
+          position: "sticky",
+          top: "0",
+          backgroundColor: "#fff",
+          zIndex: "1",
+        },
+      };
 
     return (
         <>
@@ -111,16 +120,30 @@ function NewTeam(){
                 <Modal.Header closeButton>
                     <Modal.Title>Pick Player:</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    {
-                        loading ? (
-                            <h1>loading</h1>
-                        ) : (
-                            players.map((player) => {
-                                <p1>{players}</p1>
-                            })
-                        )
-                    }
+                <Modal.Body style={tableStyles.container}>
+                    <Table style={tableStyles.table}>
+                        <thead>
+                            <tr>
+                                <th style={tableStyles.th}>Name</th>
+                                <th style={tableStyles.th}>Pos</th>
+                                <th style={tableStyles.th}>Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                players.map((player) => {
+                                    return (
+                                        <tr key={player.id}>
+                                            <td>{player.first_name} {player.last_name}</td>
+                                            <td>{player.pos}</td>
+                                            <td>{player.points}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
+
+                        </tbody>
+                    </Table>
                 </Modal.Body>
                 
             </Modal>

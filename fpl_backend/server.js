@@ -5,6 +5,7 @@ const PORT = 3001
 
 const sequelize = require("./database")
 //const models = require("./models") // DB models here.
+const Player = require("./models/Player") // Player model for DB
 
 const FantasyPL = require("./FantasyPL");
 const { Sequelize } = require("sequelize");
@@ -14,15 +15,17 @@ let team_id = "2929140" // my fpl team for testing
 
 app.use(cors())
 
-// app.get("/api/players", async (req, res) => {
-//     await fpl.getAllPlayers().then((response)=>{
-//         res.send(response.elements)
-//         // for (i = 0; i<data.length; i++){
-//         //     //console.log(data[i].first_name + " " + data[i].second_name)
-//         //     res.send(data)
-//         // }
-//     })
-// })
+app.get("/api/players", async (req, res) => {
+    try{
+        const players = await Player.findAll();
+        res.json(players)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Server error. Please try again later.")
+    }
+    
+
+})
 
 
 async function syncPlayers(){
@@ -85,30 +88,40 @@ async function syncPlayers(){
     ]
 
 
-    let a = await fpl.getAllPlayers();
-    let b = a.elements
-    for (let i = 0; i < b.length; i++){
-        if (b[i]["first_name"] == "Bukayo"){
-            let temp_arr = [
-                {
-                    "first_name": b[i]["first_name"],
-                    "last_name": b[i]["second_name"],
-                    "pos": element_types[b[i]["element_type"] - 1]["singular_name"], // position is stored as a number in fpl api, this uses that number and gets pos from array above
-                    "points": b[i]["event_points"]
-                }
-            ]
-            console.log(temp_arr)
-        }
-
-        
-        //break;
+    let getPlayers = await fpl.getAllPlayers();
+    let playerElements = getPlayers.elements
+    let playerArray = [];
+    for (let i = 0; i < playerElements.length; i++){
+        playerArray.push(
+            {
+                "first_name": playerElements[i]["first_name"],
+                "last_name": playerElements[i]["second_name"],
+                "pos": element_types[playerElements[i]["element_type"] - 1]["singular_name"], // position is stored as a number in fpl api, this uses that number and gets pos from array above
+                "points": playerElements[i]["event_points"],
+                "chance_of_playing_next_round": playerElements[i]["chance_of_playing_next_round"],
+                "chance_of_playing_this_round": playerElements[i]["chance_of_playing_this_round"],
+                "form": playerElements[i]["form"],
+                "selected_by_percent": playerElements[i]["selected_by_percent"],
+                "now_cost": playerElements[i]["now_cost"], // player current cost
+            }
+        )
     }
+    //console.log(playerArray)
+
+    try{
+        await Player.bulkCreate(playerArray)
+        console.log("Synced players with database")
+    } catch (error) {
+        console.log("ERROR: unable to sync players with DB" + error)
+    }
+    
+    //return playerArray
 }
-sequelize.sync({ force: false }) // true if i want to drop tables and start over
+sequelize.sync({ force: true }) // true if i want to drop tables and start over
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server runnning on port ${PORT}`)
-            syncPlayers()
+            syncPlayers() // get this to run on a schedule. already done for testing so leave commented. 
         })
     })
     .catch((err) => {
