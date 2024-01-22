@@ -1,34 +1,18 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../database")
 
-const Player = sequelize.define('Player', {
+const Player = sequelize.define('Team', {
     id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
-    first_name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    last_name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    pos: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    points: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    chance_of_playing_next_round: {
+    code: {
         type: DataTypes.INTEGER,
         allowNull: true
     },
-    chance_of_playing_this_round: {
+    draw: {
         type: DataTypes.INTEGER,
         allowNull: true
     },
@@ -36,35 +20,50 @@ const Player = sequelize.define('Player', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    selected_by_percent: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    now_cost: { // e.g. 55 = £5.5m
+    team_id: { // id from API
         type: DataTypes.INTEGER,
         allowNull: true
     },
-    news:{
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    news_added:{
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    fpl_id:{ // id from FPL API
+    loss: {
         type: DataTypes.INTEGER,
         allowNull: true
     },
-    squad_number:{
+    name: {
         type: DataTypes.STRING,
         allowNull: true
     },
-    team:{
+    played: {
         type: DataTypes.INTEGER,
         allowNull: true
     },
-
+    points: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    position: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    short_name: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    strength: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    unavailable: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    win: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    pulse_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -77,5 +76,4 @@ const Player = sequelize.define('Player', {
 });
 
 module.exports = Player;
-
 

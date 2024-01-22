@@ -4,8 +4,10 @@ const cors = require("cors")
 const PORT = 3001
 
 const sequelize = require("./database")
-//const models = require("./models") // DB models here.
+
+// DB Models
 const Player = require("./models/Player") // Player model for DB
+const Club = require("./models/Club")
 
 const FantasyPL = require("./FantasyPL");
 const { Sequelize } = require("sequelize");
@@ -88,8 +90,8 @@ async function syncPlayers(){
     ]
 
 
-    let getPlayers = await fpl.getAllPlayers();
-    let playerElements = getPlayers.elements
+    let getData = await fpl.getAllData();
+    let playerElements = getData.elements
     let playerArray = [];
     for (let i = 0; i < playerElements.length; i++){
         playerArray.push(
@@ -103,6 +105,35 @@ async function syncPlayers(){
                 "form": playerElements[i]["form"],
                 "selected_by_percent": playerElements[i]["selected_by_percent"],
                 "now_cost": playerElements[i]["now_cost"], // player current cost
+                "news": playerElements[i]["news"],
+                "news_added": playerElements[i]["news_added"],
+                "fpl_id": playerElements[i]["id"],
+                "squad_number": playerElements[i]["squad_number"],
+                "team": playerElements[i]["team"],
+
+            }
+        )
+    }
+
+    let teamElements = getData.teams
+    let teamArray = [];
+    for (let i = 0; i < teamElements.length; i++){
+        teamArray.push(
+            {
+                "code": teamElements[i]["code"],
+                "draw": teamElements[i]["draw"],
+                "form": teamElements[i]["form"],
+                "team_id": teamElements[i]["id"],
+                "loss": teamElements[i]["loss"],
+                "name": teamElements[i]["name"],
+                "played": teamElements[i]["played"],
+                "points": teamElements[i]["points"],
+                "position": teamElements[i]["position"],
+                "short_name": teamElements[i]["short_name"],
+                "strength": teamElements[i]["strength"],
+                "unavailable": teamElements[i]["unavailable"],
+                "win": teamElements[i]["win"],
+                "pulse_id": teamElements[i]["pulse_id"],
             }
         )
     }
@@ -110,18 +141,19 @@ async function syncPlayers(){
 
     try{
         await Player.bulkCreate(playerArray)
-        console.log("Synced players with database")
+        await Club.bulkCreate(teamArray)
+        console.log("Synced players/Teams with database")
     } catch (error) {
-        console.log("ERROR: unable to sync players with DB" + error)
+        console.log("ERROR: unable to sync players with DB\n" + error)
     }
     
     //return playerArray
 }
-sequelize.sync({ force: true }) // true if i want to drop tables and start over
+sequelize.sync({ force: false }) // true if i want to drop tables and start over
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server runnning on port ${PORT}`)
-            syncPlayers() // get this to run on a schedule. already done for testing so leave commented. 
+            //syncPlayers() // get this to run on a schedule. already done for testing so leave commented. 
         })
     })
     .catch((err) => {
