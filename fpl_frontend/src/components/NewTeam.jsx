@@ -1,4 +1,4 @@
-import { Col, Row, Container, Modal, Table } from "react-bootstrap";
+
 import PlayerBlank from "./PlayerBlank";
 import {useState, useEffect} from 'react'
 import axios from 'axios'
@@ -56,100 +56,103 @@ function NewTeam(){
         },
       };
 
-    return (
-        <>
-            <Container style={newTeamStyle}>
-                <Row style={rowStyle}>
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                </Row>
-                <Row style={rowStyle}>
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
+      return (
+        <p>NewTeam</p>
+      )
+    // return (
+    //     <>
+    //         <Container style={newTeamStyle}>
+    //             <Row style={rowStyle}>
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //             </Row>
+    //             <Row style={rowStyle}>
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
                 
-                </Row>
-                <Row style={rowStyle}>
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
+    //             </Row>
+    //             <Row style={rowStyle}>
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
                 
-                </Row>
-                <Row style={rowStyle}>
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                    <Col>
-                        <PlayerBlank onClick={handleShowModal}/>
-                    </Col> 
-                </Row>
-            </Container>
+    //             </Row>
+    //             <Row style={rowStyle}>
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //                 <Col>
+    //                     <PlayerBlank onClick={handleShowModal}/>
+    //                 </Col> 
+    //             </Row>
+    //         </Container>
 
-            <Modal show={showModal} onHide={handleHideModal} >
-                <Modal.Header closeButton>
-                    <Modal.Title>Pick Player:</Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={tableStyles.container}>
-                    <Table style={tableStyles.table}>
-                        <thead>
-                            <tr>
-                                <th style={tableStyles.th}>Name</th>
-                                <th style={tableStyles.th}>Pos</th>
-                                <th style={tableStyles.th}>Points</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                players.map((player) => {
-                                    return (
-                                        <tr key={player.id}>
-                                            <td>{player.first_name} {player.last_name}</td>
-                                            <td>{player.pos}</td>
-                                            <td>{player.points}</td>
-                                        </tr>
-                                    )
-                                })
-                            }
+    //         <Modal show={showModal} onHide={handleHideModal} >
+    //             <Modal.Header closeButton>
+    //                 <Modal.Title>Pick Player:</Modal.Title>
+    //             </Modal.Header>
+    //             <Modal.Body style={tableStyles.container}>
+    //                 <Table style={tableStyles.table}>
+    //                     <thead>
+    //                         <tr>
+    //                             <th style={tableStyles.th}>Name</th>
+    //                             <th style={tableStyles.th}>Pos</th>
+    //                             <th style={tableStyles.th}>Points</th>
+    //                         </tr>
+    //                     </thead>
+    //                     <tbody>
+    //                         {
+    //                             players.map((player) => {
+    //                                 return (
+    //                                     <tr key={player.id}>
+    //                                         <td>{player.first_name} {player.last_name}</td>
+    //                                         <td>{player.pos}</td>
+    //                                         <td>{player.points}</td>
+    //                                     </tr>
+    //                                 )
+    //                             })
+    //                         }
 
-                        </tbody>
-                    </Table>
-                </Modal.Body>
+    //                     </tbody>
+    //                 </Table>
+    //             </Modal.Body>
                 
-            </Modal>
-        </>
+    //         </Modal>
+    //     </>
         
-    );
+    // );
 }
 
 export default NewTeam

@@ -9,7 +9,7 @@ function Team(){
     return (
         <div>
             <h1 style={titleStyle}>Create your team</h1>
-            <NewTeam />
+            {/* <NewTeam /> */}
         </div>
         
     )

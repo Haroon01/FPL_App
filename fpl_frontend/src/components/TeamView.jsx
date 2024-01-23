@@ -1,4 +1,4 @@
-import { Col, Row, Container } from "react-bootstrap";
+
 import PlayerBlank from "./PlayerBlank";
 
 function TeamView(){
@@ -14,64 +14,68 @@ function TeamView(){
     }
 
     return (
-        <Container style={teamViewStyle}>
-            <Row style={rowStyle}>
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-            </Row>
-            <Row style={rowStyle}>
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
+        <p>TeamView</p>
+    )
+
+    // return (
+    //     <Container style={teamViewStyle}>
+    //         <Row style={rowStyle}>
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //         </Row>
+    //         <Row style={rowStyle}>
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
             
-            </Row>
-            <Row style={rowStyle}>
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
+    //         </Row>
+    //         <Row style={rowStyle}>
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
             
-            </Row>
-            <Row style={rowStyle}>
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-                <Col>
-                    <PlayerBlank/>
-                </Col> 
-            </Row>
-        </Container>
-    );
+    //         </Row>
+    //         <Row style={rowStyle}>
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //             <Col>
+    //                 <PlayerBlank/>
+    //             </Col> 
+    //         </Row>
+    //     </Container>
+    // );
 }
 
 export default TeamView
