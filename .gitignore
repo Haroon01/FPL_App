@@ -1,6 +1,6 @@
 fpl_backend/node_modules
 fpl_backend/.env
-fpl_frontend/config.js
+fpl_frontend/src/config.js
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 

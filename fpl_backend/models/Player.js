@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require("../database")
 
 const Player = sequelize.define('Player', {
@@ -73,6 +73,8 @@ const Player = sequelize.define('Player', {
     updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        onUpdate: Sequelize.literal('CURRENT_TIMESTAMP'),
     }
 });
 

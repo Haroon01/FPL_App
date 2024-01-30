@@ -1,21 +1,30 @@
 const express = require("express");
+const bodyParser = require("body-parser")
 const app = express();
 const cors = require("cors")
 const PORT = 3001
-
 const sequelize = require("./database")
+const FantasyPL = require("./FantasyPL");
+const { Sequelize } = require("sequelize");
+const fpl = new FantasyPL()
+require('dotenv').config();
 
 // DB Models
 const Player = require("./models/Player") // Player model for DB
 const Club = require("./models/Club")
+const User = require("./models/User")
 
-const FantasyPL = require("./FantasyPL");
-const { Sequelize } = require("sequelize");
-const fpl = new FantasyPL()
+//Routes
+const loginRoute = require("./routes/login");
+const signUpRoute = require("./routes/signup");
+
 
 let team_id = "2929140" // my fpl team for testing
 
 app.use(cors())
+app.use(bodyParser.json())
+app.use("/login", loginRoute);
+app.use("/signup", signUpRoute);
 
 app.get("/api/players", async (req, res) => {
     try{
@@ -157,6 +166,6 @@ sequelize.sync({ force: false }) // true if i want to drop tables and start over
         })
     })
     .catch((err) => {
-        console.log(`Error with db: ${err}`)
+        console.log(`Error with db: ${err}`);
     })
 

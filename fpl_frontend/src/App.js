@@ -7,6 +7,7 @@ import Header from './components/Header';
 import NotFound from './pages/Notfound';
 import Team from './pages/Team';
 import Login from "./pages/Login"
+import Signup from './pages/Signup';
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                 <Route path='/' element={<Home />} />
                 <Route path='/team' element={<Team />} />
                 <Route path='/login' element={<Login />} />
+                <Route path='/signup' element={<Signup />} />
                 <Route path="*" element={ <NotFound /> } />
             </Routes>
         </BrowserRouter>
