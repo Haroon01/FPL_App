@@ -2,19 +2,22 @@ import { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 import backendUrl from '../config';
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 function Login(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginSnackbar, setLoginSnackbar] = useState(false);
     const { state } = useLocation();
+    const navigate = useNavigate()
+
+
 
     useEffect(() => {
         if (state && state.signUpSuccess){
             setLoginSnackbar(true)
         }
-    }, [state])
+    }, [state]) // [state] means it will only run once state is true. so sb gets set to true and is visible. [] means it runs when the component is mounted
 
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
@@ -31,14 +34,17 @@ function Login(){
     )
 
     function handleLogin(){
-        axios.post(`${backendUrl}/login/fetchaccount`, {
+        axios.post(`${backendUrl}/auth/fetchaccount`, {
             username: username,
             password: password
+        }, {
+            withCredentials: true
         })
         .then((response) => {
             console.log(response.data)
             if (response.status === 200){
                 console.log("Reponse was 200 and login was successful! now implement the rest!")
+                navigate("/");
             }
         })
         .catch((error) => {
