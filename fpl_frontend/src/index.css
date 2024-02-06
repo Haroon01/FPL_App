@@ -9,7 +9,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background-color: rgb(24, 61, 61); */
   background-color: rgb(24, 61, 61);
+  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre-v2.png");
   
 
 }

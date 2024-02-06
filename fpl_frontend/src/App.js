@@ -1,5 +1,6 @@
 import './index.css';
-import { Route, Routes, BrowserRouter } from "react-router-dom"
+import React, { useState } from 'react';
+import { Route, Routes, BrowserRouter,  } from "react-router-dom"
 
 // pages / components
 import Home from './pages/Home'
@@ -8,16 +9,19 @@ import NotFound from './pages/Notfound';
 import Team from './pages/Team';
 import Login from "./pages/Login"
 import Signup from './pages/Signup';
+import Profile from './pages/Profile';
 
 function App() {
+    const [ isLoggedIn, setIsLoggedIn ] = useState(false);
     return (
         <BrowserRouter>
-            <Header/>
+            <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/team' element={<Team />} />
-                <Route path='/login' element={<Login />} />
+                <Route path='/login' element={React.cloneElement(<Login />, { setIsLoggedIn })} />
                 <Route path='/signup' element={<Signup />} />
+                <Route path='/profile' element={<Profile />} />
                 <Route path="*" element={ <NotFound /> } />
             </Routes>
         </BrowserRouter>

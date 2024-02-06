@@ -7,6 +7,7 @@ const authentication = (req, res, next) => {
     const token = req.headers.authorization || req.cookies.fplreloaded_login;
 
     if (!token){
+        console.log("no token (auth middleware)")
         return res.status(401).json({ message: "Unauthorized" });
     }
 
@@ -15,6 +16,7 @@ const authentication = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
+        console.log("error with token (auth middleware)")
         return res.status(401).json({ message: "Unauthorized" });
     }
 }

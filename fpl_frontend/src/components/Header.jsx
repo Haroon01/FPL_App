@@ -17,6 +17,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { styled } from '@mui/material/styles';
+
 import { Link } from 'react-router-dom';
 
 /**
@@ -33,40 +35,26 @@ const pages = {
 
 //const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const settings = {
-    "Profile": "/",
+    "Profile": "/profile",
     "Account": "/",
     "Dashboard": "/",
     "Logout": "/"
 }
 
-function Header() {
+const StyledMenu = styled(Menu)(({ theme }) => ({
+    backgroundColor: theme.palette.background.primary,
+  }));
+
+function Header({ isLoggedIn, setIsLoggedIn }) {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const [isCookieSet, setIsCookieSet] = useState(false);
 
-    function checkLoggedIn() {
-        axios.get(`${backendUrl}/auth/isauth`, { withCredentials: true })
-        .then((response) => {
-            if (response.status == 200){
-                setIsCookieSet(true);
-            } else {
-                console.log(`unexpected status code "${response.status}" from server.`)
-            }
-        })
-        .catch((error) => {
-            if (error.response.status == 401) {
-                setIsCookieSet(false);
-            } else {
-                console.log(error)
-            }
-        })
-    }
-
-    function handleLogout(){
+    function handleLogout(e){
+        e.preventDefault();
         console.log("handleLogout")
-        axios.post(`${backendUrl}/auth/logout`)
+        axios.post(`${backendUrl}/auth/logout`, {}, { withCredentials: true })
         .then((response) => {
-            console.log("loggedout")
+            setIsLoggedIn(false);
         })
         .catch((error) => {
             console.log("couldnt log out error")
@@ -74,14 +62,25 @@ function Header() {
         .finally(() => {
             handleCloseUserMenu()
         })
-            
-        
     }
-    
 
-    useEffect(() => {
-        checkLoggedIn();
-    }, [])
+    function checkLoggedIn() {
+        axios.get(`${backendUrl}/auth/isauth`, { withCredentials: true })
+        .then((response) => {
+            if (response.status == 200){
+                setIsLoggedIn(true);
+            } else {
+                console.log(`unexpected status code "${response.status}" from server.`)
+            }
+        })
+        .catch((error) => {
+            if (error.response.status == 401) {
+                setIsLoggedIn(false);
+            } else {
+                console.log(error)
+            }
+        })
+    }
 
     const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
@@ -97,6 +96,10 @@ function Header() {
     const handleCloseUserMenu = () => {
       setAnchorElUser(null);
     };
+
+    useEffect(() => {
+        checkLoggedIn();
+    }, [])
 
 
     return (
@@ -116,7 +119,7 @@ function Header() {
               >
                 <MenuIcon />
               </IconButton>
-              <Menu
+              <StyledMenu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 anchorOrigin={{
@@ -141,7 +144,7 @@ function Header() {
                           </MenuItem>
                       ))
                   }
-              </Menu>
+              </StyledMenu>
             </Box>
             <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -154,7 +157,7 @@ function Header() {
 
             <Box sx={{ flexGrow: 0 }}>
                 {
-                    isCookieSet ? (
+                    isLoggedIn ? (
                         <>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

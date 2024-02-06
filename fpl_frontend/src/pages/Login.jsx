@@ -3,8 +3,9 @@ import { Container, Paper, Typography, TextField, Button, Snackbar, Alert } from
 import axios from 'axios';
 import backendUrl from '../config';
 import { useLocation, useNavigate } from 'react-router-dom'
+import CustomSnackbar from '../components/CustomSnackbar';
 
-function Login(){
+function Login( {setIsLoggedIn }){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginSnackbar, setLoginSnackbar] = useState(false);
@@ -28,9 +29,12 @@ function Login(){
       };
 
     const signUpSuccessSnackbar = (
-        <Snackbar open={loginSnackbar} autoHideDuration={5000} onClose={handleCloseSnackbar}>
-            <Alert onClose={handleCloseSnackbar} severity="success" variant="filled" sx={{ width: '100%' }}>Success! You can now log in.</Alert>
-        </Snackbar>
+        <CustomSnackbar
+            open={loginSnackbar}
+            handleCloseSnackbar={handleCloseSnackbar}
+            severity="success"
+            message="Success! You can now log in."
+        />
     )
 
     function handleLogin(){
@@ -44,10 +48,15 @@ function Login(){
             console.log(response.data)
             if (response.status === 200){
                 console.log("Reponse was 200 and login was successful! now implement the rest!")
+                setIsLoggedIn(true);
                 navigate("/");
+
             }
         })
         .catch((error) => {
+            if (error.response.status === 401){
+                console.log("Login failed")
+            }
             console.log(error)
         })
         return null;

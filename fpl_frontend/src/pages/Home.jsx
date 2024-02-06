@@ -1,10 +1,10 @@
-import Header from "../components/Header"
+import { Typography } from "@mui/material";
 
 function Home(){
 
     return (
       <>
-        <h1>FPL app work in progress. Homepage</h1>
+          <Typography variant="h1" color="textPrimary">Homepage</Typography>
       </>
 		
 

@@ -34,6 +34,7 @@ router.post("/fetchaccount", async (req, res) => {
             httpOnly: true,
             secure: false, // true when https. TODO
             sameSite:'lax',
+            path: "/",
             expires: expirationTime
         })
 
@@ -61,10 +62,18 @@ router.post("/logout", (req, res) => {
         //     secure: false, // Set to true if using HTTPS
         //     sameSite: 'lax',
         // });
-        res.clearCookie(process.env.COOKIE_NAME)
+        //console.log(process.env.COOKIE_NAME)
+        
+        res.clearCookie(process.env.COOKIE_NAME, {
+            httpOnly: true,
+            secure: false, // Set to true if using HTTPS
+            sameSite: 'lax',
+            path: "/"
+        })
         res.status(200).json({ message: "Log out successful"})
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: "Log out unsuccessful"})
     }
 
