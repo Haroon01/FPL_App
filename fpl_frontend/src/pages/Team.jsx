@@ -1,8 +1,17 @@
 import { useTheme } from '@emotion/react';
 import { Container, Paper, Typography, TextField, Button, Snackbar, Alert, styled, alpha, Grid } from '@mui/material';
+import axios from 'axios'
+import backendUrl from '../config';
+import { useEffect, useState } from 'react';
+import PlayerModal from '../components/PlayerModal';
 
 function Team(){
     const theme = useTheme();
+    const [ players, setPlayers ] = useState([]);
+    const [ isModalOpen, setIsModalOpen ] = useState(false);
+    const handleOpenModal = () => setIsModalOpen(true);
+    const handleCloseModal = () => setIsModalOpen(false);
+
     const StyledButton = styled(Button)(({ theme }) => ({
         color: theme.palette.secondary.main, // Set the color of the text and the outline
         borderColor: theme.palette.secondary.main,
@@ -17,9 +26,19 @@ function Team(){
 
     function handleClick(playerType){
         console.log(playerType)
+        axios.get(`${backendUrl}/players/${playerType}`, { withCredentials: true })
+        .then((response) => {
+            //console.log(response.data);
+            setPlayers(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        handleOpenModal();
     }
     return (
         <Container component="main" maxWidth="xs" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '90vh' }}>
+            <PlayerModal open={isModalOpen} onClose={handleCloseModal} tableData={players}/>
             <Paper elevation={3} style={{ padding: 16, width: 400, height: 500, backgroundColor: theme.palette.primary.main}}>
                 <Grid container spacing={2} sx={{ width: '100%', height:'100%', justifyContent: 'space-between' }}>
                     {/** Goalkeepers */}

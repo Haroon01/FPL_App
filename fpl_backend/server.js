@@ -21,6 +21,7 @@ const User = require("./models/User")
 const authRoute = require("./routes/auth");
 const signUpRoute = require("./routes/signup");
 const profileRoute = require("./routes/profile");
+const playersRoute = require("./routes/players");
 
 const app = express();
 app.use(session({
@@ -38,6 +39,7 @@ app.use(cookieParser());
 app.use("/auth", authRoute);
 app.use("/signup", signUpRoute);
 app.use("/profile", profileRoute);
+app.use("/players", playersRoute);
 
 app.get("/api/players", async (req, res) => {
     try{
