@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -21,9 +21,10 @@ const rows = [
 
 
 
-export default function PlayerModal( { open, onClose, tableData } ) {
+export default function PlayerModal( { open, onClose, tableData, onRowClick } ) {
     // const [ page, setPage ] = useState(0);
     // const [ rowsPerPage, setRowsPerPage ] = useState(10);
+    const [ playerSearch, setPlayerSearch ] = useState("");
     const theme = useTheme();
 
     const style = {
@@ -40,6 +41,13 @@ export default function PlayerModal( { open, onClose, tableData } ) {
         backgroundColor: theme.palette.primary.main
       };
 
+    // const searchStyle = {
+    //     width: '100%',
+    //     display: 'flex',
+    //     alignItems: 'center',
+    //     justifyContent: 'center'
+    // }
+
     // const getPlayers = () => {
     //     axios.get(`${backendUrl}/players/${playerType}`, { withCredentials: true })
     //     .then((response) => {
@@ -55,9 +63,34 @@ export default function PlayerModal( { open, onClose, tableData } ) {
     //     setPage(0);
     // };
 
+    // useEffect(() => {
+    //     console.log(tableData)
+    // }, [])
+
+    const handleSearch = (e) => {
+        setPlayerSearch(e.target.value);
+    }
+
+    let searchResults = tableData;
+    if (playerSearch !== "") {
+        searchResults = tableData.filter((row) => {
+            return row.first_name.toLowerCase().includes(playerSearch.toLowerCase()) || row.last_name.toLowerCase().includes(playerSearch.toLowerCase())
+        })
+    }
+
+    const handleRowClick = (row) => {
+        if (onRowClick){
+            onRowClick(row);
+            setPlayerSearch("");
+        }
+    }
 
     const TableElement = (
         <Paper sx={{ width: '100%', height: "100%", overflow: 'hidden' }}>
+            <Box sx={{ overflow: 'hidden', paddingLeft: "10px", paddingTop: "5px" }}>
+                <TextField id="txtPlayerSearch" label="Search Players" variant="standard" onChange={handleSearch}/>
+            </Box>
+            
             <TableContainer sx={{ height: "90%" }}>
                 <Table stickyHeader aria-label="sticky table">
                 <TableHead>
@@ -66,7 +99,7 @@ export default function PlayerModal( { open, onClose, tableData } ) {
                         <TableCell
                         key={column.id}
                         align={column.align}
-                        style={{ minWidth: column.minWidth }}
+                        style={{ minWidth: column.minWidth}}
                         >
                         {column.label}
                         </TableCell>
@@ -74,14 +107,14 @@ export default function PlayerModal( { open, onClose, tableData } ) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {tableData
+                    {searchResults
                     .map((row) => {
                         return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code} onClick={() => handleRowClick(row)}>
                             {columns.map((column) => {
                             const value = row[column.id];
                             return (
-                                <TableCell key={column.id} align={column.align}>
+                                <TableCell key={column.id} align={column.align} style={{ cursor: "pointer" }}>
                                 {column.format && typeof value === 'number'
                                     ? column.format(value)
                                     : value}
