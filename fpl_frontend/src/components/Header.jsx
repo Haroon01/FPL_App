@@ -1,5 +1,5 @@
 // import * as React from 'react';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import backendUrl from '../config';
 import axios from 'axios';
 
@@ -64,23 +64,24 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
         })
     }
 
-    function checkLoggedIn() {
+    const checkLoggedIn = useCallback(() => {
         axios.get(`${backendUrl}/auth/isauth`, { withCredentials: true })
         .then((response) => {
-            if (response.status == 200){
+            if (response.status === 200){
                 setIsLoggedIn(true);
+                console.log("setIsLoggedIn(true)")
             } else {
                 console.log(`unexpected status code "${response.status}" from server.`)
             }
         })
         .catch((error) => {
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
                 setIsLoggedIn(false);
             } else {
                 console.log(error)
             }
         })
-    }
+    }, [setIsLoggedIn])
 
     const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
@@ -99,7 +100,8 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 
     useEffect(() => {
         checkLoggedIn();
-    }, [])
+        console.log(isLoggedIn)
+    }, [checkLoggedIn, isLoggedIn])
 
 
     return (
@@ -138,20 +140,35 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
                 }}
               >
                   {
-                      Object.entries(pages).map(([page, value]) => (
-                          <MenuItem key={page.toLowerCase()} onClick={handleCloseNavMenu} href={value}>
-                              <Typography textAlign="center">{page}</Typography>
+                    isLoggedIn ? (
+                        Object.entries(pages).map(([page, value]) => (
+                          <MenuItem key={page.toLowerCase()} onClick={handleCloseNavMenu}>
+                            <Link to={value}>
+                                <Typography textAlign="center">{page}</Typography>
+                            </Link>
                           </MenuItem>
-                      ))
+                        ))
+                    ) : (
+                        <MenuItem key="home" onClick={handleCloseNavMenu}>
+                            <Link to="/">
+                                <Typography textAlign="center">Home</Typography>
+                            </Link>
+                        </MenuItem>
+                    )
+                      
                   }
               </StyledMenu>
             </Box>
             <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {
+                isLoggedIn ? (
                   Object.entries(pages).map(([page, value]) => (
                       <Button key={page.toLowerCase()} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} href={value}>{page}</Button>
                   ))
+                ) : (
+                    <Button key="home" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} href="/">Home</Button>
+                )
               }
             </Box>
 
@@ -185,7 +202,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
                                     //     <MenuItem key={setting} onClick={handleCloseUserMenu}>{setting}</MenuItem>
                                     // ))
                                     Object.entries(settings).map(([menuItem, path]) => (
-                                        <MenuItem component={"a"} href={path} key={menuItem.toLowerCase()} onClick={menuItem == "Logout" ? handleLogout : handleCloseUserMenu} >
+                                        <MenuItem component={"a"} href={path} key={menuItem.toLowerCase()} onClick={menuItem === "Logout" ? handleLogout : handleCloseUserMenu} >
                                             {/* <Link to={path} style={{ textDecoration: 'none', outline: 'none' }}>{menuItem}</Link> */}
                                             {menuItem}
                                         </MenuItem>

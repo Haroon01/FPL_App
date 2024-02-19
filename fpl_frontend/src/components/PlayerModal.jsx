@@ -22,8 +22,8 @@ const rows = [
 
 
 export default function PlayerModal( { open, onClose, tableData } ) {
-    const [ page, setPage ] = useState(0);
-    const [ rowsPerPage, setRowsPerPage ] = useState(10);
+    // const [ page, setPage ] = useState(0);
+    // const [ rowsPerPage, setRowsPerPage ] = useState(10);
     const theme = useTheme();
 
     const style = {
@@ -47,13 +47,13 @@ export default function PlayerModal( { open, onClose, tableData } ) {
     //     })
     // }
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+    // const handleChangePage = (event, newPage) => {
+    //     setPage(newPage);
+    // };
+    // const handleChangeRowsPerPage = (event) => {
+    //     setRowsPerPage(+event.target.value);
+    //     setPage(0);
+    // };
 
 
     const TableElement = (
@@ -75,7 +75,6 @@ export default function PlayerModal( { open, onClose, tableData } ) {
                 </TableHead>
                 <TableBody>
                     {tableData
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                         return (
                         <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
@@ -95,7 +94,7 @@ export default function PlayerModal( { open, onClose, tableData } ) {
                 </TableBody>
                 </Table>
             </TableContainer>
-            <TablePagination
+            {/* <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
                 count={rows.length}
@@ -103,7 +102,7 @@ export default function PlayerModal( { open, onClose, tableData } ) {
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            /> */}
         </Paper>
     )
 

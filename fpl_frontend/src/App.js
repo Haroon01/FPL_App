@@ -1,6 +1,7 @@
 import './index.css';
 import React, { useState } from 'react';
 import { Route, Routes, BrowserRouter,  } from "react-router-dom"
+import ProtectedRoute from './components/ProtectedRoute';
 
 // pages / components
 import Home from './pages/Home'
