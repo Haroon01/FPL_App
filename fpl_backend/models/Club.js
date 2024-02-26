@@ -1,7 +1,7 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require("../database")
 
-const Player = sequelize.define('Team', {
+const Club = sequelize.define('Club', {
     id: {
         allowNull: false,
         autoIncrement: true,
@@ -77,5 +77,5 @@ const Player = sequelize.define('Team', {
     }
 });
 
-module.exports = Player;
+module.exports = Club;
 
