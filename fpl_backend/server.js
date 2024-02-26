@@ -16,6 +16,8 @@ require('dotenv').config();
 const Player = require("./models/Player") // Player model for DB
 const Club = require("./models/Club")
 const User = require("./models/User")
+const UserSquad = require("./models/UserSquad")
+const UserStartingPlayers = require("./models/UserStartingPlayers")
 
 //Routes
 const authRoute = require("./routes/auth");
@@ -49,11 +51,7 @@ app.get("/api/players", async (req, res) => {
         console.log(error)
         res.status(500).send("Server error. Please try again later.")
     }
-    
-
 })
-
-
 
 sequelize.sync({ force: false }) // true if i want to drop tables and start over
     .then(() => {
