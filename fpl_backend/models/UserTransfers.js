@@ -4,8 +4,7 @@ const User = require("./User")
 const Player = require("./Player")
 const UserSquad = require("./UserSquad")
 
-// Keeps a track of which player is benched on a users squad. 
-const UserStartingPlayers = sequelize.define('UserStartingPlayers', {
+const UserTransfers = sequelize.define('UserTransfers', {
     id: {
         allowNull: false,
         autoIncrement: true,
@@ -20,26 +19,23 @@ const UserStartingPlayers = sequelize.define('UserStartingPlayers', {
             key: 'id'
         }
     },
-    userSquadId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: UserSquad,
-            key: 'id'
-        }
-    }, 
-    playerId: {
+    playerInId:{
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Player,
             key: 'id'
         }
+    
     },
-    isBenched: {
-        type: DataTypes.BOOLEAN,
+    playerOutId:{
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: false
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    
     },
     createdAt: {
         allowNull: false,
@@ -56,6 +52,6 @@ const UserStartingPlayers = sequelize.define('UserStartingPlayers', {
 
 
 
-module.exports = UserStartingPlayers;
+module.exports = UserTransfers;
 
 

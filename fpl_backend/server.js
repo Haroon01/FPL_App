@@ -18,6 +18,10 @@ const Club = require("./models/Club")
 const User = require("./models/User")
 const UserSquad = require("./models/UserSquad")
 const UserStartingPlayers = require("./models/UserStartingPlayers")
+const UserTransfers = require("./models/UserTransfers")
+const Leagues = require("./models/Leagues")
+const LeagueUsers = require("./models/LeagueUsers")
+
 
 //Routes
 const authRoute = require("./routes/auth");
@@ -53,7 +57,7 @@ app.get("/api/players", async (req, res) => {
     }
 })
 
-sequelize.sync({ force: false }) // true if i want to drop tables and start over
+sequelize.sync({ force: false, alter: false }) // force = true if i want to drop tables and start over -- alter = true to update without dropping
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server runnning on port ${PORT}`)
