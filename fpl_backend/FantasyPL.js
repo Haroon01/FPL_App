@@ -102,10 +102,12 @@ class FantasyPL {
         let playerElements = getData.elements
         let playerArray = [];
         for (let i = 0; i < playerElements.length; i++){
+            console.log(playerElements[i]["web_name"])
             playerArray.push(
                 {
                     "first_name": playerElements[i]["first_name"],
                     "last_name": playerElements[i]["second_name"],
+                    "short_name": playerElements[i]["web_name"],
                     "pos": element_types[playerElements[i]["element_type"] - 1]["singular_name"], // position is stored as a number in fpl api, this uses that number and gets pos from array above
                     "points": playerElements[i]["event_points"],
                     "chance_of_playing_next_round": playerElements[i]["chance_of_playing_next_round"],

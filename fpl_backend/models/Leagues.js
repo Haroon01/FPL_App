@@ -15,14 +15,14 @@ const Leagues = sequelize.define('Leagues', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    created_by_user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: User,
-            key: 'id'
-        }
-    }, 
+    // created_by_user_id: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: User,
+    //         key: 'id'
+    //     }
+    // }, 
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

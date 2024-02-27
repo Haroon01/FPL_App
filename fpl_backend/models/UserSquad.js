@@ -25,7 +25,7 @@ const UserSquad = sequelize.define('UserSquad', {
     }
 });
 
-UserSquad.hasOne(User);
+//UserSquad.hasOne(User);
 
 // the below have been moved to ./Player.js
 // UserSquad.hasOne(Player, { foreignKey: 'gk1_id' });

@@ -11,32 +11,32 @@ const UserTransfers = sequelize.define('UserTransfers', {
         primaryKey: true,
         type: DataTypes.INTEGER
     },
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: User,
-            key: 'id'
-        }
-    },
-    playerInId:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Player,
-            key: 'id'
-        }
+    // userId: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: User,
+    //         key: 'id'
+    //     }
+    // },
+    // playerInId:{
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: Player,
+    //         key: 'id'
+    //     }
     
-    },
-    playerOutId:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Player,
-            key: 'id'
-        }
+    // },
+    // playerOutId:{
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: Player,
+    //         key: 'id'
+    //     }
     
-    },
+    // },
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

@@ -1,5 +1,6 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require("../database")
+const UserSquad = require("./UserSquad")
 
 const User = sequelize.define('User', {
     id: {
@@ -30,6 +31,14 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    // userSquadId: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: true,
+    //     references: {
+    //         model: UserSquad,
+    //         key: 'id'
+    //     }
+    // }, 
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

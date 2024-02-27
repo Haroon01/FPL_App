@@ -22,12 +22,15 @@ const UserTransfers = require("./models/UserTransfers")
 const Leagues = require("./models/Leagues")
 const LeagueUsers = require("./models/LeagueUsers")
 
+require("./models/associations"); // associate models with foreign keys
+
 
 //Routes
 const authRoute = require("./routes/auth");
 const signUpRoute = require("./routes/signup");
 const profileRoute = require("./routes/profile");
 const playersRoute = require("./routes/players");
+const teamRoute = require("./routes/team");
 
 const app = express();
 app.use(session({
@@ -46,6 +49,7 @@ app.use("/auth", authRoute);
 app.use("/signup", signUpRoute);
 app.use("/profile", profileRoute);
 app.use("/players", playersRoute);
+app.use("/team", teamRoute);
 
 app.get("/api/players", async (req, res) => {
     try{

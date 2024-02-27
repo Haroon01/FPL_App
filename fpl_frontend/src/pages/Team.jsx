@@ -14,6 +14,7 @@ function Team(){
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
     const [duplicateSnackbar, setDuplicateSnackbar] = useState(false);
+    const [teamSavedSnackbar, setTeamSavedSnackbar] = useState(false);
     const [selectedPlayerIndex, setSelectedPlayerIndex] = useState(null);
     const [selectedGk, setSelectedGk] = useState([null, null]);
     const [selectedDef, setSelectedDef] = useState([null, null, null, null, null]);
@@ -40,6 +41,16 @@ function Team(){
             message="You've already selected this player"
         />
     )
+        // TODO: FIX THIS! make it so there isnt duplcated code for a snackbar.
+    const TeamSavedSnackbarComponent = (
+        <CustomSnackbar
+            open={teamSavedSnackbar}
+            handleCloseSnackbar={() => {setTeamSavedSnackbar(false)}}
+            severity="success"
+            message="Your team has been saved!"
+        />
+    )
+
 
     function handleClick(playerType, index){
         console.log(playerType, index)
@@ -94,10 +105,45 @@ function Team(){
         }
         handleCloseModal();
     }
+
+    const handleSaveBtnClick = () => {
+        const newTeamData = [selectedGk, selectedDef, selectedMid, selectedFw]
+        const hasNull = newTeamData.some(arr => arr.some(player => player === null));
+        if (hasNull) {
+            console.log("team isnt complete")
+        } else {
+            axios.post(`${backendUrl}/team/newteam/save`, newTeamData, { withCredentials: true })
+            .then((response) => {
+                console.log(response.data);
+                setTeamSavedSnackbar(true);
+            })
+        }
+    }
+
+    const fetchTeam = () => {
+        axios.get(`${backendUrl}/team/getteam`, { withCredentials: true })
+        .then((response) => {
+            console.log(response.data);
+            const { gk1, gk2, def1, def2, def3, def4, def5, mid1, mid2, mid3, mid4, mid5, fw1, fw2, fw3 } = response.data;
+            setSelectedGk([gk1, gk2]);
+            setSelectedDef([def1, def2, def3, def4, def5]);
+            setSelectedMid([mid1, mid2, mid3, mid4, mid5]);
+            setSelectedFw([fw1, fw2, fw3]);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
+    useEffect(() => {
+        fetchTeam();
+    }, [])
     return (
-        <Container component="main" maxWidth="xs" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '90vh' }}>
+        <Container component="main" maxWidth="xs" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '90vh', flexDirection: 'column' }}>
             <PlayerModal open={isModalOpen} onClose={handleCloseModal} tableData={players} onRowClick={handleRowClick}/>
+            <Button variant="contained" color="secondary" style={{ margin: '10px', width: '100%' }} onClick={handleSaveBtnClick}>Save Team</Button>
             {DuplicateSnackbarComponent}
+            {TeamSavedSnackbarComponent}
             <Paper elevation={3} style={{ padding: 16, width: 400, height: 500, backgroundColor: theme.palette.primary.main}}>
                 <Stack direction="column" spacing={2} alignItems="center">
                     {/** Goalkeepers */}

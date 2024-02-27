@@ -22,7 +22,7 @@ function Player(props){
         width: 50,
       }));
     return (
-        <StyledButton variant="outlined" onClick={handleClick}>{playerData ? `${playerData.first_name} ${playerData.last_name}` : "+"}</StyledButton>
+        <StyledButton variant="outlined" onClick={handleClick}>{playerData ? `${playerData.short_name}` : "+"}</StyledButton>
 
     )
 }

@@ -12,22 +12,22 @@ const LeagueUsers = sequelize.define('LeagueUsers', {
         primaryKey: true,
         type: DataTypes.INTEGER
     },
-    leagueId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Leagues,
-            key: 'id'
-        }
-    },
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: User,
-            key: 'id'
-        }
-    }, 
+    // leagueId: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: Leagues,
+    //         key: 'id'
+    //     }
+    // },
+    // userId: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: User,
+    //         key: 'id'
+    //     }
+    // }, 
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
