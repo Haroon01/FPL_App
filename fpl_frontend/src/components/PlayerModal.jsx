@@ -12,6 +12,7 @@ const columns = [
     { id: 'last_name', label: 'Last Name', minWidth: 170 },
     { id: 'pos', label: 'Position', minWidth: 170 },
     { id: 'form', label: 'Form', minWidth: 170 },
+    { id: 'club', label: 'Club', minWidth: 170 }
 ]
 const rows = [
     { name: 'Mikel Arteta', pos: 'Midfielder', form: 7.5 },

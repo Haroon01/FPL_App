@@ -1,6 +1,8 @@
 const express = require('express');
 const authentication = require('../middleware/authentication');
+const { Sequelize } = require("sequelize");
 const Player = require("../models/Player");
+const Club = require("../models/Club");
 const router = express.Router();
 
 router.get('/:type', authentication, async (req, res) => {
@@ -20,29 +22,41 @@ router.get('/:type', authentication, async (req, res) => {
             break;
     }
     try{
-        const players = await Player.findAll({
-            where: { pos: playerType }
+        let players = await Player.findAll({
+            where: { pos: playerType },
+            include: [{
+                model: Club,
+                attributes: ["name"],
+                where: { id: Sequelize.col("Player.team")}
+            
+            }]
         })
+
+        // Map over the players array and modify each player object
+        players = players.map(player => {
+            // Convert the player instance to a plain object
+            const playerData = player.toJSON();
+
+            // Replace the Club object with the club name, if the Club is not undefined
+            let clubName;
+            if (playerData.Club) {
+                clubName = playerData.Club.name;
+                delete playerData.Club;
+            }
+
+            // Create a new object with all properties of playerData and the modified club property
+            return { ...playerData, club: clubName };
+        });
+        
         //console.log(players)
         res.json(players)
     } catch (error) {
-        console.log("error")
+        console.log("error in players.js backend")
+        console.log(error)
         res.status(500).send("Error occured while getting players!")
     }
 
-    
-    //res.send("req.data")
-    // const username = req.user.username;
-    // const user = await User.findOne({
-    //     where: { username: username },
-    // });
-    // res.send({
-    //     username: user.dataValues.username,
-    //     first_name: user.dataValues.first_name,
-    //     last_name: user.dataValues.last_name,
-    //     email: user.dataValues.email,
-    //     user_since: user.dataValues.createdAt
-    // });
+
 });
 
 module.exports = router;

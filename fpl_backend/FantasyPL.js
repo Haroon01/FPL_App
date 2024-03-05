@@ -130,6 +130,7 @@ class FantasyPL {
         for (let i = 0; i < teamElements.length; i++){
             teamArray.push(
                 {
+                    "id": teamElements[i]["id"],
                     "code": teamElements[i]["code"],
                     "draw": teamElements[i]["draw"],
                     "form": teamElements[i]["form"],
@@ -148,10 +149,18 @@ class FantasyPL {
             )
         }
         //console.log(playerArray)
+
+        playerArray = playerArray.map(player => { // match teamArray.name with playerArray.team in a new col "club_name" for club names
+            return {
+                ...player,
+                "club_name": teamArray.find(team => team.id === player.team).name
+            }
+        })
     
         try{
-            await Player.bulkCreate(playerArray)
             await Club.bulkCreate(teamArray)
+            await Player.bulkCreate(playerArray)
+
             console.log("Synced players/Teams with database")
         } catch (error) {
             console.log("ERROR: unable to sync players with DB\n" + error)

@@ -13,14 +13,12 @@ const fpl = new FantasyPL()
 require('dotenv').config();
 
 // DB Models
+const User = require("./models/User")
 const Player = require("./models/Player") // Player model for DB
 const Club = require("./models/Club")
-const User = require("./models/User")
 const UserSquad = require("./models/UserSquad")
 const UserStartingPlayers = require("./models/UserStartingPlayers")
-const UserTransfers = require("./models/UserTransfers")
-const Leagues = require("./models/Leagues")
-const LeagueUsers = require("./models/LeagueUsers")
+
 
 require("./models/associations"); // associate models with foreign keys
 

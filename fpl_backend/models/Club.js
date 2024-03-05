@@ -4,10 +4,14 @@ const sequelize = require("../database")
 const Club = sequelize.define('Club', {
     id: {
         allowNull: false,
-        autoIncrement: true,
+        //autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
+    // api_id: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false
+    // },
     code: {
         type: DataTypes.INTEGER,
         allowNull: true

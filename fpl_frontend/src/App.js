@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import Header from './components/Header';
 import NotFound from './pages/Notfound';
 import Team from './pages/Team';
+import CurrentTeam from './pages/CurrentTeam';
 import Login from "./pages/Login"
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
@@ -20,6 +21,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/team' element={<Team />} />
+                <Route path='/currentteam' element={<CurrentTeam />} />
                 <Route path='/login' element={React.cloneElement(<Login />, { setIsLoggedIn })} />
                 <Route path='/signup' element={<Signup />} />
                 <Route path='/profile' element={<Profile />} />

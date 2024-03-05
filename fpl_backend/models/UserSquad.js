@@ -12,6 +12,135 @@ const UserSquad = sequelize.define('UserSquad', {
         type: DataTypes.INTEGER
     },
     // player FKs are all defined in Player.js model
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id'
+        }
+    },
+    gk1_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    gk2_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    def1_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    def2_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    def3_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    def4_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    def5_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    mid1_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    mid2_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    mid3_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    mid4_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    mid5_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    fw1_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    fw2_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+    fw3_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Player,
+            key: 'id'
+        }
+    },
+
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -25,24 +154,6 @@ const UserSquad = sequelize.define('UserSquad', {
     }
 });
 
-//UserSquad.hasOne(User);
-
-// the below have been moved to ./Player.js
-// UserSquad.hasOne(Player, { foreignKey: 'gk1_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'gk2_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'def1_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'def2_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'def3_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'def4_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'def5_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'mid1_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'mid2_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'mid3_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'mid4_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'mid5_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'fw1_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'fw2_id' });
-// UserSquad.hasOne(Player, { foreignKey: 'fw3_id' });
 
 
 module.exports = UserSquad;

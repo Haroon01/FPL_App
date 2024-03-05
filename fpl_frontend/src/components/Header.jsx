@@ -29,7 +29,7 @@ import { Link } from 'react-router-dom';
  */
 const pages = {
     "Home": "/",
-    "Team": "/team",
+    "My Team": "/currentteam",
     // "Login": "/login",
 }
 

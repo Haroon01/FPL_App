@@ -1,6 +1,5 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require("../database")
-const UserSquad = require("./UserSquad")
 
 const Player = sequelize.define('Player', {
     id: {
@@ -69,6 +68,10 @@ const Player = sequelize.define('Player', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    club_name:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -82,21 +85,6 @@ const Player = sequelize.define('Player', {
     }
 });
 
-// Player.hasMany(UserSquad, { foreignKey: 'gk1_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'gk2_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'def1_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'def2_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'def3_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'def4_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'def5_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'mid1_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'mid2_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'mid3_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'mid4_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'mid5_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'fw1_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'fw2_id' });
-// Player.hasMany(UserSquad, { foreignKey: 'fw3_id' });
 
 module.exports = Player;
 

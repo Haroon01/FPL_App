@@ -80,19 +80,30 @@ router.post('/newteam/save', authentication, async (req, res) => {
             squad.fw3_id = fwArray[2].id;
             await squad.save();
 
-            // Combine all position arrays into a single array
-            const newPlayers = [...gkArray, ...defArray, ...midArray, ...fwArray];
-
+            const playerIds = [
+                gkArray[0].id, gkArray[1].id,
+                defArray[0].id, defArray[1].id, defArray[2].id, defArray[3].id, defArray[4].id,
+                midArray[0].id, midArray[1].id, midArray[2].id, midArray[3].id, midArray[4].id,
+                fwArray[0].id, fwArray[1].id, fwArray[2].id
+            ];
+            
             // Fetch the current UserStartingPlayers records for the user
             const currentPlayers = await UserStartingPlayers.findAll({ where: { userId: user.id } });
-
-            // Update UserStartingPlayers
-            for (let i = 0; i < newPlayers.length; i++) {
-                currentPlayers[i].playerId = newPlayers[i].id;
-                await currentPlayers[i].save();
+            
+            // Create a map of playerId to isBenched status
+            const isBenchedMap = {};
+            currentPlayers.forEach(player => {
+                isBenchedMap[player.playerId] = player.isBenched;
+            });
+            
+            // Delete all current UserStartingPlayers records for the user
+            await UserStartingPlayers.destroy({ where: { userId: user.id } });
+            
+            // Create new UserStartingPlayers records with the new playerIds and the old isBenched status
+            for (let playerId of playerIds) {
+                const isBenched = isBenchedMap[playerId] || false;
+                await UserStartingPlayers.create({ userSquadId: squad.id, userId: user.id, playerId: playerId, isBenched: isBenched });
             }
-            
-            
         }
 
         res.send("Team saved successfully!")

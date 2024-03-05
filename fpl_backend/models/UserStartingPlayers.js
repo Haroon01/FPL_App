@@ -12,22 +12,22 @@ const UserStartingPlayers = sequelize.define('UserStartingPlayers', {
         primaryKey: true,
         type: DataTypes.INTEGER
     },
-    // userId: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: User,
-    //         key: 'id'
-    //     }
-    // },
-    // userSquadId: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: UserSquad,
-    //         key: 'id'
-    //     }
-    // }, 
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id'
+        }
+    },
+    userSquadId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: UserSquad,
+            key: 'id'
+        }
+    }, 
     playerId: {
         type: DataTypes.INTEGER,
         allowNull: false,

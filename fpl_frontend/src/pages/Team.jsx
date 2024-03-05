@@ -3,12 +3,14 @@ import { Container, Paper, Typography, TextField, Button, Snackbar, Alert, style
 import axios from 'axios'
 import backendUrl from '../config';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import PlayerModal from '../components/PlayerModal';
 import Player from '../components/Player';
 import CustomSnackbar from '../components/CustomSnackbar';
 
 function Team(){
     const theme = useTheme();
+    const navigate = useNavigate();
     const [ players, setPlayers ] = useState([]);
     const [ isModalOpen, setIsModalOpen ] = useState(false);
     const handleOpenModal = () => setIsModalOpen(true);
@@ -57,7 +59,7 @@ function Team(){
         setSelectedPlayerIndex(index);
         axios.get(`${backendUrl}/players/${playerType}`, { withCredentials: true })
         .then((response) => {
-            //console.log(response.data);
+            console.log(response.data);
             setPlayers(response.data);
         })
         .catch((error) => {
@@ -116,6 +118,11 @@ function Team(){
             .then((response) => {
                 console.log(response.data);
                 setTeamSavedSnackbar(true);
+
+                // Wait for 2 seconds before redirecting
+                setTimeout(() => {
+                    navigate('/currentteam');
+                }, 2000);
             })
         }
     }
@@ -141,6 +148,7 @@ function Team(){
     return (
         <Container component="main" maxWidth="xs" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '90vh', flexDirection: 'column' }}>
             <PlayerModal open={isModalOpen} onClose={handleCloseModal} tableData={players} onRowClick={handleRowClick}/>
+            <Typography variant="h4" color="secondary" style={{ margin: '10px' }}>Create Your Team</Typography>
             <Button variant="contained" color="secondary" style={{ margin: '10px', width: '100%' }} onClick={handleSaveBtnClick}>Save Team</Button>
             {DuplicateSnackbarComponent}
             {TeamSavedSnackbarComponent}
