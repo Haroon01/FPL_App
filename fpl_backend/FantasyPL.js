@@ -158,8 +158,13 @@ class FantasyPL {
         })
     
         try{
-            await Club.bulkCreate(teamArray)
-            await Player.bulkCreate(playerArray)
+            //await Club.bulkCreate(teamArray)
+            for (const team of teamArray) {
+                await Club.upsert(team);
+            }
+            for (const player of playerArray) {
+                await Player.upsert(player, { where: { fpl_id: player.fpl_id } });
+            }
 
             console.log("Synced players/Teams with database")
         } catch (error) {

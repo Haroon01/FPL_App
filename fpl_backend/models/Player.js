@@ -54,7 +54,8 @@ const Player = sequelize.define('Player', {
     },
     fpl_id:{ // id from FPL API
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: true,
+        unique: true
     },
     squad_number:{
         type: DataTypes.STRING,

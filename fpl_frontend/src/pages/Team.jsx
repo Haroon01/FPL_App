@@ -57,7 +57,7 @@ function Team(){
     function handleClick(playerType, index){
         console.log(playerType, index)
         setSelectedPlayerIndex(index);
-        axios.get(`${backendUrl}/players/${playerType}`, { withCredentials: true })
+        axios.get(`${backendUrl}/players/type/${playerType}`, { withCredentials: true })
         .then((response) => {
             console.log(response.data);
             setPlayers(response.data);

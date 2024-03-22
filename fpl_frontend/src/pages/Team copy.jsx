@@ -33,7 +33,7 @@ function Team(){
 
     function handleClick(playerType){
         console.log(playerType)
-        axios.get(`${backendUrl}/players/${playerType}`, { withCredentials: true })
+        axios.get(`${backendUrl}/players/type/${playerType}`, { withCredentials: true })
         .then((response) => {
             //console.log(response.data);
             setPlayers(response.data);

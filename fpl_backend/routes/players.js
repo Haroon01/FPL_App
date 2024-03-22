@@ -5,7 +5,7 @@ const Player = require("../models/Player");
 const Club = require("../models/Club");
 const router = express.Router();
 
-router.get('/:type', authentication, async (req, res) => {
+router.get('/type/:type', authentication, async (req, res) => {
     let playerType = "";
     switch(req.params.type){
         case "gk":
@@ -58,5 +58,25 @@ router.get('/:type', authentication, async (req, res) => {
 
 
 });
+
+router.get("/news", authentication, async (req, res) => {
+    try{
+        let players = await Player.findAll({
+            where: {
+                chance_of_playing_next_round: {
+                    [Sequelize.Op.ne]: 100,
+                    [Sequelize.Op.ne]: 0
+                },
+                news: {
+                    [Sequelize.Op.ne]: ""
+                }
+            }
+        })
+        res.json(players)
+    } catch (error) {
+        console.log("error in players.js backend")
+        console.log(error)
+    }
+})
 
 module.exports = router;
