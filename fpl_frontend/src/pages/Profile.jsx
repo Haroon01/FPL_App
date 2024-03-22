@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Grid, Paper, Box, styled, Container, useTheme } from '@mui/material';
+import { Typography, Grid, Paper, Box, styled, Container, useTheme, Card, CardContent, Divider, List, ListItem, ListItemText } from '@mui/material';
 import backendUrl from '../config';
 import axios from 'axios';
 
@@ -32,6 +32,7 @@ const Profile = () => {
         axios.get(`${backendUrl}/profile/data`, {withCredentials: true})
         .then((response) => {
             setProfileData(response.data)
+            console.log(response.data)
         })
     }
 
@@ -39,41 +40,66 @@ const Profile = () => {
         getProfileData()
     }, [])
 
-
     return (
-        <>
-            <Container component="main" maxWidth="xl" style={containerStyle}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Typography variant='h2' color={theme.palette.text.primary}>{profileData.username}'s Profile</Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Item>Name</Item>
-                    </Grid>
-                    <Grid item xs={8}>
-                        <Item>{profileData.first_name} {profileData.last_name}</Item>
-                    </Grid>
-
-                    <Grid item xs={4}>
-                        <Item>Email</Item>
-                    </Grid>
-                    <Grid item xs={8}>
-                        <Item>{profileData.email}</Item>
-                    </Grid>
-
-                    <Grid item xs={4}>
-                        <Item>User Since</Item>
-                    </Grid>
-                    <Grid item xs={8}>
-                        <Item>{new Date(profileData.user_since).toLocaleDateString('en-GB')}</Item>
-                    </Grid>
-
-                </Grid>
-
-            </Container>
-        </>
-
+        <Card sx={{ maxWidth: 400, m: 'auto', mt: 5, backgroundColor: '#fff' }}>
+            <CardContent>
+                <Typography variant="h5" component="div" gutterBottom>
+                    Your Profile
+                </Typography>
+                <Divider sx={{ my: 2 }} />
+                <List>
+                    <ListItem>
+                        <ListItemText primary="Name" secondary={profileData.first_name + " " + profileData.last_name} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="Username" secondary={profileData.username} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="Email" secondary={profileData.email} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="User Since" secondary={new Date(profileData.user_since).toLocaleDateString('en-GB')} />
+                    </ListItem>
+                    {/* Add more list items for other user details */}
+                </List>
+            </CardContent>
+        </Card>
     );
+
+    // return (
+    //     <>
+    //         <Container component="main" maxWidth="xl" style={containerStyle}>
+    //             <Grid container spacing={2}>
+    //                 <Grid item xs={12}>
+    //                     <Typography variant='h2' color={theme.palette.text.primary}>{profileData.username}'s Profile</Typography>
+    //                 </Grid>
+    //                 <Grid item xs={4}>
+    //                     <Item>Name</Item>
+    //                 </Grid>
+    //                 <Grid item xs={8}>
+    //                     <Item>{profileData.first_name} {profileData.last_name}</Item>
+    //                 </Grid>
+
+    //                 <Grid item xs={4}>
+    //                     <Item>Email</Item>
+    //                 </Grid>
+    //                 <Grid item xs={8}>
+    //                     <Item>{profileData.email}</Item>
+    //                 </Grid>
+
+    //                 <Grid item xs={4}>
+    //                     <Item>User Since</Item>
+    //                 </Grid>
+    //                 <Grid item xs={8}>
+    //                     <Item>{new Date(profileData.user_since).toLocaleDateString('en-GB')}</Item>
+    //                 </Grid>
+
+    //             </Grid>
+
+    //         </Container>
+    //     </>
+
+    // );
 };
 
 export default Profile;

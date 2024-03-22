@@ -15,7 +15,7 @@ const theme = createTheme({
             //secondary: "rgb(75, 3, 87)"
         },
         secondary: {
-            main: lightGreen
+            main: '#fff' //lightGreen
         },
         text: {
             primary: offBlack

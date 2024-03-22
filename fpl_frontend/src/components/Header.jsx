@@ -20,7 +20,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { styled, alpha } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 /**
  * Pages object is written like as below:
@@ -42,6 +42,20 @@ const settings = {
 	"Logout": "/"
 }
 
+const header_btn_sx = { // style for header buttons
+	my: 2, 
+	color: 'white', 
+	display: 'block', 
+	'&:hover': {
+		transform: 'scale(1.1)',
+		transition: 'transform 0.3s'
+	},
+	'&:active': {
+		transform: 'scale(0.9)',
+		transition: 'transform 0.3s'
+	}
+}
+
 const StyledMenu = styled(Menu)(({ theme }) => ({
 	backgroundColor: alpha(theme.palette.background.primary, 0.3),
   }));
@@ -50,6 +64,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
 	const [username, setUsername] = useState("");
+	const navigate = useNavigate();
 
 	function handleLogout(e){
 		e.preventDefault();
@@ -63,6 +78,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 		})
 		.finally(() => {
 			handleCloseUserMenu()
+			navigate("/")
 		})
 	}
 
@@ -151,7 +167,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 				  display: { xs: 'block', md: 'none' },
 				}}
 			  >
-				  {
+				  { // These are the buttons for the mobile sized header icons
 					isLoggedIn ? (
 						Object.entries(pages).map(([page, value]) => (
 						  <MenuItem key={page.toLowerCase()} onClick={handleCloseNavMenu}>
@@ -172,13 +188,14 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 			  </StyledMenu>
 			</Box>
 			<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-			  {
+			  { // These are for the full sized webpage header buttons
 				isLoggedIn ? (
 				  Object.entries(pages).map(([page, value]) => (
-					  <Button key={page.toLowerCase()} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} href={value}>{page}</Button>
+					  <Button key={page.toLowerCase()} onClick={handleCloseNavMenu} disableRipple sx={header_btn_sx} href={value}>{page}</Button>
 				  ))
 				) : (
-					<Button key="home" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} href="/">Home</Button>
+					// <Button key="home" onClick={handleCloseNavMenu} sx={header_btn_sx} href="/">Home</Button>
+					<></>
 				)
 			  }
 			</Box>

@@ -20,17 +20,33 @@ router.get('/type/:type', authentication, async (req, res) => {
         case "fw":
             playerType = "Forward";
             break;
+        case "all":
+            playerType = "All";
+            break;
     }
     try{
-        let players = await Player.findAll({
-            where: { pos: playerType },
-            include: [{
-                model: Club,
-                attributes: ["name"],
-                where: { id: Sequelize.col("Player.team")}
-            
-            }]
-        })
+        let players;
+        if (playerType === "All") {
+            players = await Player.findAll({
+                include: [{
+                    model: Club,
+                    attributes: ["name"],
+                    where: { id: Sequelize.col("Player.team")}
+                
+                }]
+            });
+        } else {
+            players = await Player.findAll({
+                where: { pos: playerType },
+                include: [{
+                    model: Club,
+                    attributes: ["name"],
+                    where: { id: Sequelize.col("Player.team")}
+                
+                }]
+            })
+        }
+
 
         // Map over the players array and modify each player object
         players = players.map(player => {
