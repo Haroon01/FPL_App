@@ -59,11 +59,11 @@ app.get("/api/players", async (req, res) => {
     }
 })
 
-sequelize.sync({ force: false, alter: false }) // force = true if i want to drop tables and start over -- alter = true to update without dropping
+sequelize.sync({ force: true, alter: false }) // force = true if i want to drop tables and start over -- alter = true to update without dropping
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server runnning on port ${PORT}`)
-            //fpl.syncPlayers() // get this to run on a schedule. already done for testing so leave commented. 
+            fpl.syncPlayers() // get this to run on a schedule. already done for testing so leave commented. 
         })
     })
     .catch((err) => {

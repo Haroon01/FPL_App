@@ -14,6 +14,7 @@ import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import FaqPage from './pages/FaqPage';
 import SearchPlayers from './pages/SearchPlayers';
+import EditTeam from './pages/EditTeam';
 
 function App() {
     const [ isLoggedIn, setIsLoggedIn ] = useState(false);
@@ -29,6 +30,7 @@ function App() {
                 <Route path='/profile' element={<Profile />} />
                 <Route path='/faq' element={<FaqPage />} />
                 <Route path='/players/search' element={<SearchPlayers />} />
+                <Route path='/currentteam/edit' element={<EditTeam />} />
                 <Route path="*" element={ <NotFound /> } />
             </Routes>
         </BrowserRouter>

@@ -3,7 +3,7 @@ import { Container, Paper, Typography, TextField, Button, Snackbar, Alert, style
 import axios from 'axios'
 import backendUrl from '../config';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import CurrentPlayer from '../components/CurrentPlayer';
 import PlayerModal from '../components/PlayerModal';
 
@@ -12,6 +12,7 @@ import CustomSnackbar from '../components/CustomSnackbar';
 function CurrentTeam(){
     const theme = useTheme();
     const navigate = useNavigate();
+    const location = useLocation();
     const [ players, setPlayers ] = useState([]);
     const [ isModalOpen, setIsModalOpen ] = useState(false);
     const handleOpenModal = () => setIsModalOpen(true);
@@ -24,6 +25,7 @@ function CurrentTeam(){
     const [mid, setmid] = useState([]);
     const [fw, setfw] = useState([]);
     const [bench, setBench] = useState([]);
+    const [score, setScore] = useState(0);
 
     const StyledButton = styled(Button)(({ theme }) => ({
         color: theme.palette.secondary.main, // Set the color of the text and the outline
@@ -73,14 +75,13 @@ function CurrentTeam(){
     const fetchTeam = () => {
         axios.get(`${backendUrl}/team/getcurrent`, { withCredentials: true })
         .then((response) => {
-            console.log(response.data);
+            //console.log(response.data);
             const { gk, def, mid, fw, bench } = response.data;
             setgk(gk);
             setdef(def);
             setmid(mid);
             setfw(fw);
             setBench(bench); // continue from here! players are set in teh state. need to amend currentTeam layout with a bench and display players
-
         })
         .catch((error) => {
             console.log(error);
@@ -90,13 +91,30 @@ function CurrentTeam(){
         })
     }
 
+    const calculatePoints = () => { // need to move this to backend.
+        console.log("calculatePoints() running")
+        let points = 0;
+        let startingTeam = [...gk, ...def, ...mid, ...fw];
+        console.log(startingTeam)
+        for (let player of startingTeam){
+            points += player.points;
+        }
+        setScore(points);
+    }
+
     useEffect(() => {
         fetchTeam();
+        
     }, [])
+
+    useEffect(() => {
+        // Runs whenever one of these dependencies changes
+        calculatePoints();
+    }, [gk, def, mid, fw]);
     return (
         <Stack direction="column" spacing={1} alignItems="center" style={{ position: 'absolute', top: '10%', width: '100%' }}>
             <Paper elevation={3} style={{ padding: 20, width: 400, height: 10, backgroundColor: theme.palette.primary.main, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>Points: 87</Typography>
+                <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>Points: {score}</Typography>
             </Paper>
             <Container component="main" maxWidth="xs" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70vh', flexDirection: 'column' }}>
                 {DuplicateSnackbarComponent}
@@ -141,6 +159,7 @@ function CurrentTeam(){
                     </Stack>
                     
                 </Paper>
+                <Button variant="contained" color="secondary" style={{ marginTop: 10, width: "100%" }} onClick={ () => { navigate("/currentteam/edit") } }>Make a transfer</Button>
             </Container>
         </Stack>
     )
