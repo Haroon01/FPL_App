@@ -16,8 +16,10 @@ require('dotenv').config();
 const User = require("./models/User")
 const Player = require("./models/Player") // Player model for DB
 const Club = require("./models/Club")
+const Gameweek = require("./models/Gameweek")
 const UserSquad = require("./models/UserSquad")
 const UserStartingPlayers = require("./models/UserStartingPlayers")
+
 
 
 require("./models/associations"); // associate models with foreign keys

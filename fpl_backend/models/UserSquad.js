@@ -2,6 +2,7 @@ const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require("../database")
 const User = require("./User")
 const Player = require("./Player")
+const Gameweek = require("./Gameweek")
 
 // Holds the users squad.
 const UserSquad = sequelize.define('UserSquad', {
@@ -137,6 +138,14 @@ const UserSquad = sequelize.define('UserSquad', {
         allowNull: false,
         references: {
             model: Player,
+            key: 'id'
+        }
+    },
+    gameweek_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Gameweek,
             key: 'id'
         }
     },

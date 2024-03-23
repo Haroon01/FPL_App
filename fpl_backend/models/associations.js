@@ -3,7 +3,7 @@ const Player = require("./Player")
 const User = require("./User")
 const UserSquad = require("./UserSquad")
 const UserStartingPlayers = require("./UserStartingPlayers");
-
+const Gameweek = require("./Gameweek");
 
 // User can have one squad, and the squad belongs to that user only.
 User.hasOne(UserSquad, { foreignKey: 'userId' });
@@ -43,3 +43,6 @@ Player.hasMany(UserStartingPlayers, { foreignKey: 'playerId' })
 
 Player.belongsTo(Club, { foreignKey: 'team' });
 Club.hasMany(Player, { foreignKey: 'team' });
+
+UserSquad.belongsTo(Gameweek, { foreignKey: 'gameweek_id' });
+Gameweek.hasMany(UserSquad, { foreignKey: 'gameweek_id' });

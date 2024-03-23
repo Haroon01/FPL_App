@@ -3,6 +3,7 @@ const axios = require("axios");
 // DB Models
 const Player = require("./models/Player");
 const Club = require("./models/Club");
+const Gameweek = require("./models/Gameweek");
 
 //let team_id = "2929140" // my fpl team for testing
 
@@ -39,7 +40,7 @@ class FantasyPL {
     // .elements for players
     // 
 
-    async syncPlayers(){
+    async syncPlayers(){ // change this to syncFPLData()
         let element_types = [
             {
                 "id": 1,
@@ -156,6 +157,30 @@ class FantasyPL {
                 "club_name": teamArray.find(team => team.id === player.team).name
             }
         })
+
+        let gameweekData = getData.events;
+        let gameweekArray = [];
+        for (let i = 0; i < gameweekData.length; i++){
+            gameweekArray.push(
+                {
+                    "id": gameweekData[i]["id"],
+                    "name": gameweekData[i]["name"],
+                    "deadline_time": gameweekData[i]["deadline_time"],
+                    "release_time": gameweekData[i]["release_time"],
+                    "average_entry_score": gameweekData[i]["average_entry_score"],
+                    "finished": gameweekData[i]["finished"],
+                    "data_checked": gameweekData[i]["data_checked"],
+                    "highest_scoring_entry": gameweekData[i]["highest_scoring_entry"],
+                    "deadline_time_epoch": gameweekData[i]["deadline_time_epoch"],
+                    "deadline_time_game_offset": gameweekData[i]["deadline_time_game_offset"],
+                    "highest_score": gameweekData[i]["highest_score"],
+                    "is_previous": gameweekData[i]["is_previous"],
+                    "is_current": gameweekData[i]["is_current"],
+                    "is_next": gameweekData[i]["is_next"],
+                    "ranked_count": gameweekData[i]["ranked_count"],
+                }
+            )
+        }
     
         try{
             //await Club.bulkCreate(teamArray)
@@ -165,15 +190,22 @@ class FantasyPL {
             for (const player of playerArray) {
                 await Player.upsert(player, { where: { fpl_id: player.fpl_id } });
             }
-
-            console.log("Synced players/Teams with database")
+            for (const gameweek of gameweekArray) {
+                await Gameweek.upsert(gameweek, { where: { id: gameweek.id } });
+            }
+            console.log("Synced database (Players, Teams, Gameweeks) From API")
         } catch (error) {
             console.log("ERROR: unable to sync players with DB\n" + error)
         }
         
         //return playerArray
     }
-
+    
+    async getCurrentGameweek() {
+        return Gameweek.findOne({
+            where: { is_current: true } // Assuming 'is_current' flags the current gameweek
+        });
+    }
 
 }
 
