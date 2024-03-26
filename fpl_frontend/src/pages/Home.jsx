@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import backendUrl from '../config';
-import { Container, Typography, Button, Box, Paper, Grid, Card, CardContent, CardHeader, TextField, Divider } from '@mui/material';
+import { Container, Typography, Button, Box, Paper, Grid, Card, CardContent, CardHeader, TextField, Divider, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
 import CurrentTeam from './CurrentTeam';
 function Home(props){
 	const isLoggedIn = props.isLoggedIn
 	const [playerNews, setPlayerNews] = useState([])
+	const [gk, setgk] = useState([]);
+	const [def, setdef] = useState([]);
+	const [mid, setmid] = useState([]);
+	const [fw, setfw] = useState([]);
+	const [bench, setBench] = useState([]);
+	const [teamExists, setTeamExists] = useState(false);
 
 
 	let getPlayerNews = () => {
@@ -21,8 +27,29 @@ function Home(props){
 		})
 	}
 
+	const fetchTeam = () => {
+        axios.get(`${backendUrl}/team/getcurrent`, { withCredentials: true })
+        .then((response) => {
+            //console.log(response.data);
+            const { gk, def, mid, fw, bench } = response.data;
+            setgk(gk);
+            setdef(def);
+            setmid(mid);
+            setfw(fw);
+            setBench(bench);
+			setTeamExists(true)
+        })
+        .catch((error) => {
+            console.log(error);
+            if (error.response.status === 404){
+                setTeamExists(false);
+            }
+        })
+    }
+
 	useEffect(() => {
 		getPlayerNews()
+		fetchTeam();
 	}, []);
 
 	return (
@@ -31,15 +58,59 @@ function Home(props){
 				<Grid container spacing={3}>
 					{/* Current Team Section */}
 					<Grid item xs={12} md={6}>
-						<Paper sx={{ padding: 2 }}>
+						<Paper sx={{ padding: 2, minHeight: 500 }}>
 							<Typography variant="h6" gutterBottom>
 								Your Current squad
 							</Typography>
-							<ul>
-								<li key="teamkeyplaceholder">
-									<Typography>Player Name</Typography>
-								</li>
-							</ul>
+							<Divider />
+							{
+								teamExists ? (
+									<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', mt: 3 }}>
+										
+										<Stack direction="column" spacing={1} alignItems="center">
+											<Typography variant="h5">Goalkeeper</Typography>
+											{
+												gk.map((player, index) => (
+													<Typography key={index} variant="body1">{player.short_name}</Typography>
+												))
+											}
+											<Typography variant="h5">Defenders</Typography>
+											{
+												def.map((player, index) => (
+													<Typography key={index} variant="body1">{player.short_name}</Typography>
+												))
+											}
+
+											<Typography variant="h5">Midfielders</Typography>
+											{
+												mid.map((player, index) => (
+													<Typography key={index} variant="body1">{player.short_name}</Typography>
+												))
+											}
+
+											<Typography variant="h5">Strikers</Typography>
+											{
+												fw.map((player, index) => (
+													<Typography key={index} variant="body1">{player.short_name}</Typography>
+												))
+											}
+
+											<Typography variant="h5">Bench</Typography>
+											{
+												bench.map((player, index) => (
+													<Typography key={index} variant="body1">{player.short_name}</Typography>
+												))
+											}
+										</Stack>
+									</Box>
+
+								) : (
+									<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', mt: 10 }}>
+										<Typography variant="h5">You don't have a squad</Typography>
+									</Box>
+								)
+							}
+							
 						</Paper>
 					</Grid>
 

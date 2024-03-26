@@ -73,6 +73,78 @@ const Player = sequelize.define('Player', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    points_per_game:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    minutes: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    goals_scored: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    assists: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    clean_sheets: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    goals_conceded: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    own_goals: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    penalties_saved: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    penalties_missed: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    yellow_cards: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    red_cards: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    threat: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    starts: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    expected_goals: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    expected_assists: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    expected_goal_involvements: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    expected_goals_conceded: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    expected_goals_per_90: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

@@ -59,7 +59,7 @@ app.get("/api/players", async (req, res) => {
     }
 })
 
-sequelize.sync({ force: true, alter: false }) // force = true if i want to drop tables and start over -- alter = true to update without dropping
+sequelize.sync({ force: false, alter: false }) // force = true if i want to drop tables and start over -- alter = true to update without dropping
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server runnning on port ${PORT}`)

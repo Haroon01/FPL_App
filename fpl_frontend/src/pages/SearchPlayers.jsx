@@ -11,6 +11,8 @@ const SearchPlayers = () => {
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
     const [ isModalOpen, setIsModalOpen ] = useState(false);
+    const [selectedPlayer, setSelectedPlayer] = useState({});
+
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
 
@@ -50,6 +52,7 @@ const SearchPlayers = () => {
 
     const handleRowClick = (row) => {
         console.log(row)
+        setSelectedPlayer(row);
         setIsModalOpen(true);
     }
 
@@ -60,7 +63,7 @@ const SearchPlayers = () => {
 
     return (
         <Box sx={{ m: 3, }}>
-            <PlayerDetailsModal open={isModalOpen} onClose={handleCloseModal} playerData={"player"}/>
+            <PlayerDetailsModal open={isModalOpen} onClose={handleCloseModal} playerData={selectedPlayer}/>
             <TableContainer component={Paper} style={{ height: "80vh", overflow: "auto" }}>
                 <Box sx={{ mb: 2, marginTop: 1, position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff'}}>
                     <TextField 
@@ -89,7 +92,7 @@ const SearchPlayers = () => {
                         </TableHead>
                         <TableBody>
                             {data.map((row) => (
-                                <TableRow key={row.id} onClick={() => {handleRowClick(row)}}>
+                                <TableRow key={row.id} onClick={() => {handleRowClick(row)}} sx={{ cursor: "pointer", "&:hover": { backgroundColor: "#e6e6e6" } }}>
                                     <TableCell>{row.first_name} {row.last_name}</TableCell>
                                     <TableCell>{row.club_name}</TableCell>
                                     <TableCell>{row.pos}</TableCell>

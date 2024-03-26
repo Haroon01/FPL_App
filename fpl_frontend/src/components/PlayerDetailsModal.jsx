@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
-import Button from '@mui/material/Button';
+import { Box, Stack, Divider } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useTheme } from '@emotion/react';
@@ -30,23 +30,65 @@ export default function PlayerDetailsModal( { open, onClose, playerData } ) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: "90%",
+        width: "50%",
         height: "70%",
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
-        backgroundColor: theme.palette.primary.main
+        backgroundColor: theme.palette.primary.secondary
       };
+
+	const onCloseBtnClick = () => {
+		onClose()
+	}
+
+	const newsSx = (severity) => {
+		let sx = {
+			display: "flex",
+			backgroundColor: "",
+			width: "100%",
+			alignContent: "center",
+			justifyContent: "center"
+		};
+		switch (severity) {
+			case 0:
+				sx.backgroundColor = "#ff0000"; // red
+				break;
+			case 25:
+				sx.backgroundColor = "#ff8800"; // darker orange
+				break;
+			case 50:
+				sx.backgroundColor = "#ffcc00"; // lighter orange
+				break;
+			case 75:
+				sx.backgroundColor = "#fff700"; // bright yellow
+				break;
+
+		}
+
+
+		return sx;
+	
+	}
+	
+	
 
 
     const TableElement = (
-        <Paper sx={{ width: '100%', height: "100%", overflow: 'hidden' }}>
             <Box sx={{ overflow: 'hidden', paddingLeft: "10px", paddingTop: "5px" }}>
-                <Typography variant="h4">testmodal</Typography>
+				<Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+					<Typography variant="h4" >{playerData.first_name + " " + playerData.last_name}</Typography>
+					<CloseIcon sx={{ cursor: "pointer"}} onClick={onClose}/>
+				</Box>
+				<Divider sx={{mt: 1}} />
+                <Stack direction="row" spacing={1} alignItems="center">
+					
+					
+					<Typography variant="h6" sx={newsSx(playerData.chance_of_playing_next_round)}>{playerData.news}</Typography>
+                </Stack>
             </Box>
             
-        </Paper>
     )
 
   return (

@@ -103,7 +103,7 @@ class FantasyPL {
         let playerArray = [];
         for (let i = 0; i < playerElements.length; i++){
             console.log(playerElements[i]["web_name"])
-            playerArray.push(
+            playerArray.push( // TODO: Update the below from the player model defined. cross reference with api on postman. need to recreate tables, alter??
                 {
                     "first_name": playerElements[i]["first_name"],
                     "last_name": playerElements[i]["second_name"],
