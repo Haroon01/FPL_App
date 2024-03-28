@@ -63,7 +63,7 @@ sequelize.sync({ force: false, alter: false }) // force = true if i want to drop
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server runnning on port ${PORT}`)
-            fpl.syncPlayers() // get this to run on a schedule. already done for testing so leave commented. 
+            //fpl.syncPlayers() // get this to run on a schedule. already done for testing so leave commented. 
         })
     })
     .catch((err) => {

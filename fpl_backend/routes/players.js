@@ -64,7 +64,7 @@ router.get('/type/:type', authentication, async (req, res) => {
             return { ...playerData, club: clubName };
         });
         
-        //console.log(players)
+        //console.log(players.own_goals)
         res.json(players)
     } catch (error) {
         console.log("error in players.js backend")

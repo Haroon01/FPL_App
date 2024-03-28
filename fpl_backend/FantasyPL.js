@@ -108,7 +108,7 @@ class FantasyPL {
                     "first_name": playerElements[i]["first_name"],
                     "last_name": playerElements[i]["second_name"],
                     "short_name": playerElements[i]["web_name"],
-                    "pos": element_types[playerElements[i]["element_type"] - 1]["singular_name"], // position is stored as a number in fpl api, this uses that number and gets pos from array above
+                    "pos": element_types[playerElements[i]["element_type"] - 1]["singular_name"], // position is stored as a number in fpl api, this uses that number and gets pos from array above -- need to store the above in db!
                     "points": playerElements[i]["event_points"],
                     "chance_of_playing_next_round": playerElements[i]["chance_of_playing_next_round"],
                     "chance_of_playing_this_round": playerElements[i]["chance_of_playing_this_round"],
@@ -120,6 +120,26 @@ class FantasyPL {
                     "fpl_id": playerElements[i]["id"],
                     "squad_number": playerElements[i]["squad_number"],
                     "team": playerElements[i]["team"],
+                    // club_name is added below
+                    "points_per_game": playerElements[i]["points_per_game"],
+                    "minutes": playerElements[i]["minutes"],
+                    "goals_scored": playerElements[i]["goals_scored"],
+                    "assists": playerElements[i]["assists"],
+                    "clean_sheets": playerElements[i]["clean_sheets"],
+                    "goals_conceded": playerElements[i]["goals_conceded"],
+                    "own_goals": playerElements[i]["own_goals"],
+                    "penalties_saved": playerElements[i]["penalties_saved"],
+                    "penalties_missed": playerElements[i]["penalties_missed"],
+                    "yellow_cards": playerElements[i]["yellow_cards"],
+                    "red_cards": playerElements[i]["red_cards"],
+                    "threat": playerElements[i]["threat"],
+                    "starts": playerElements[i]["starts"],
+                    "expected_goals": playerElements[i]["expected_goals"],
+                    "expected_assists": playerElements[i]["expected_assists"],
+                    "expected_goal_involvements": playerElements[i]["expected_goal_involvements"],
+                    "expected_goals_conceded": playerElements[i]["expected_goals_conceded"],
+                    "expected_goals_per_90": playerElements[i]["expected_goals_per_90"],
+                    
     
                 }
             )
