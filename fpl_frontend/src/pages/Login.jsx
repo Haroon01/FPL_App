@@ -9,6 +9,7 @@ function Login( {setIsLoggedIn }){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginSnackbar, setLoginSnackbar] = useState(false);
+    const [loginFailSnackbar, setLoginFailSnackbar] = useState(false);
     const { state } = useLocation();
     const navigate = useNavigate()
 
@@ -28,12 +29,29 @@ function Login( {setIsLoggedIn }){
         setLoginSnackbar(false);
       };
 
+    const handleCloseLoginFailSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setLoginFailSnackbar(false);
+      };
+
     const signUpSuccessSnackbar = (
         <CustomSnackbar
             open={loginSnackbar}
             handleCloseSnackbar={handleCloseSnackbar}
             severity="success"
             message="Success! You can now log in."
+        />
+    )
+
+    const logInFailSnackbar = (
+        <CustomSnackbar
+            open={loginFailSnackbar}
+            handleCloseSnackbar={handleCloseLoginFailSnackbar}
+            severity="error"
+            message="Username or Password is incorrect!"
         />
     )
 
@@ -47,7 +65,6 @@ function Login( {setIsLoggedIn }){
         .then((response) => {
             console.log(response.data)
             if (response.status === 200){
-                console.log("Reponse was 200 and login was successful! now implement the rest!")
                 setIsLoggedIn(true);
                 navigate("/");
 
@@ -56,6 +73,7 @@ function Login( {setIsLoggedIn }){
         .catch((error) => {
             if (error.response.status === 401){
                 console.log("Login failed")
+                setLoginFailSnackbar(true)
             }
             console.log(error)
         })
@@ -65,6 +83,7 @@ function Login( {setIsLoggedIn }){
     return (
         <Container component="main" maxWidth="xs" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '90vh' }}>
             {signUpSuccessSnackbar}
+            {logInFailSnackbar}
             <Paper elevation={3} style={{ padding: 16, width: '100%', maxWidth: 400 }}>
                 <Typography variant="h5" gutterBottom>
                     Login

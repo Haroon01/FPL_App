@@ -43,7 +43,7 @@ const SearchPlayers = () => {
 
     const filterData = (searchValue) => {
         const lowercasedSearchValue = searchValue.toLowerCase();
-        const filteredData = data.filter(item => 
+        const filteredData = originalData.filter(item => 
             item.first_name.toLowerCase().includes(lowercasedSearchValue) ||
             item.last_name.toLowerCase().includes(lowercasedSearchValue)
         );

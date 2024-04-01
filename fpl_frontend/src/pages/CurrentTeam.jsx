@@ -26,6 +26,7 @@ function CurrentTeam(){
     const [fw, setfw] = useState([]);
     const [bench, setBench] = useState([]);
     const [score, setScore] = useState(0);
+    const [gameweek, setGameweek] = useState("");
 
     const StyledButton = styled(Button)(({ theme }) => ({
         color: theme.palette.secondary.main, // Set the color of the text and the outline
@@ -59,17 +60,8 @@ function CurrentTeam(){
 
 
     function handleClick(playerType, index){
-        console.log(playerType, index)
-        setSelectedPlayerIndex(index);
-        axios.get(`${backendUrl}/players/type/${playerType}`, { withCredentials: true })
-        .then((response) => {
-            //console.log(response.data);
-            setPlayers(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-        handleOpenModal();
+        console.log("subsitutions not implemented yet")
+        // handle subsitutions
     }
 
     const fetchTeam = () => {
@@ -102,8 +94,20 @@ function CurrentTeam(){
         setScore(points);
     }
 
+    const getGameweek = () => {
+        axios.get(`${backendUrl}/gameweek/current`, { withCredentials: true })
+        .then((response) => {
+            setGameweek(response.data.id)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    
+    }
+
     useEffect(() => {
         fetchTeam();
+        getGameweek();
         
     }, [])
 
@@ -113,7 +117,8 @@ function CurrentTeam(){
     }, [gk, def, mid, fw]);
     return (
         <Stack direction="column" spacing={1} alignItems="center" style={{ position: 'absolute', top: '10%', width: '100%' }}>
-            <Paper elevation={3} style={{ padding: 20, width: 400, height: 10, backgroundColor: theme.palette.primary.main, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <Paper elevation={3} style={{ padding: 20, width: 400, height: 50, backgroundColor: theme.palette.primary.main, display: 'flex', flexDirection: "column", alignItems: 'center', justifyContent: 'center'}}>
+                <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>Gameweek: {gameweek}</Typography>
                 <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>Points: {score}</Typography>
             </Paper>
             <Container component="main" maxWidth="xs" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70vh', flexDirection: 'column' }}>

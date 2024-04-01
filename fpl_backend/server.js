@@ -29,6 +29,7 @@ const signUpRoute = require("./routes/signup");
 const profileRoute = require("./routes/profile");
 const playersRoute = require("./routes/players");
 const teamRoute = require("./routes/team");
+const gameweekRoute = require("./routes/gameweek");
 
 const app = express();
 app.use(session({
@@ -48,6 +49,7 @@ app.use("/signup", signUpRoute);
 app.use("/profile", profileRoute);
 app.use("/players", playersRoute);
 app.use("/team", teamRoute);
+app.use("/gameweek", gameweekRoute);
 
 app.get("/api/players", async (req, res) => {
     try{

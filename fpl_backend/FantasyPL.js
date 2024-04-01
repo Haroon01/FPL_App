@@ -3,6 +3,7 @@ const axios = require("axios");
 // DB Models
 const Player = require("./models/Player");
 const Club = require("./models/Club");
+const Gameweek = require("./models/Gameweek");
 
 //let team_id = "2929140" // my fpl team for testing
 
@@ -176,6 +177,24 @@ class FantasyPL {
                 "club_name": teamArray.find(team => team.id === player.team).name
             }
         })
+
+        // get gameweek data and store in db
+        let gameweekData = getData.events;
+        let gameweekArray = [];
+        for (let i = 0; i < gameweekData.length; i++){
+            gameweekArray.push(
+                {
+                    "id": gameweekData[i]["id"],
+                    "name": gameweekData[i]["name"],
+                    "deadline_time": gameweekData[i]["deadline_time"],
+                    "finished": gameweekData[i]["finished"],
+                    "is_previous": gameweekData[i]["is_previous"],
+                    "is_current": gameweekData[i]["is_current"],
+                    "is_next": gameweekData[i]["is_next"],
+                }
+            )
+        }
+
     
         try{
             //await Club.bulkCreate(teamArray)
@@ -184,6 +203,9 @@ class FantasyPL {
             }
             for (const player of playerArray) {
                 await Player.upsert(player, { where: { fpl_id: player.fpl_id } });
+            }
+            for (const gameweek of gameweekArray) {
+                await Gameweek.upsert(gameweek, { where: { id: gameweek.id } })
             }
 
             console.log("Synced players/Teams with database")
