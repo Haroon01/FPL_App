@@ -72,3 +72,4 @@ sequelize.sync({ force: false, alter: false }) // force = true if i want to drop
         console.log(`Error with db: ${err}`);
     })
 
+module.exports = app;
