@@ -44,9 +44,9 @@ const faqs = [
             <span>
                 Custom chips are some new chips that can be played! Some we already have planned are: 
                 <ul>
-                    <li><strong>All Out Attack</strong>: Field a full squad of Midfielders/Attackers for one GameWeek</li>
-                    <li><strong>Park The Bus</strong>: Field a full squad of Defenders for one GameWeek</li>
-                    <li><strong>The Underdogs</strong>: All players outside of the Big 6 will have triple points!</li>
+                    <li><strong>All Out Attack</strong>: All Strikers & Midfielders gain double points!</li>
+                    <li><strong>Park The Bus</strong>: Goalkeeper & Defenders gain Double Points</li>
+                    <li><strong>The Underdogs</strong>: All players outside of the traditional Big 6 gain triple points</li>
                 </ul>
                 We are open to suggestions for more!
             </span>
