@@ -27,11 +27,11 @@ function CurrentTeam(){
     // const [fw, setfw] = useState([]);
     // const [bench, setBench] = useState([]);
     const [team, setTeam] = useState({
-        gk: [],
-        def: [],
-        mid: [],
-        fw: [],
-        bench: []
+        "gk": [],
+        "def": [],
+        "mid": [],
+        "fw": [],
+        "bench": []
     })
     const [score, setScore] = useState(0);
     const [gameweek, setGameweek] = useState("");
@@ -78,11 +78,22 @@ function CurrentTeam(){
     )
 
 
+    const enableAllButtons = () => {
+        setGkDisable(false)
+        setDefDisable(false)
+        setMidDisable(false)
+        setFwDisable(false)
+        setBenchDefDisable(false)
+        setBenchMidDisable(false)
+        setBenchFwDisable(false)
+    }
+
 
 
     function handleClick(playerType, index, playerObj){
         //console.log(playerType)
         // if player is deselected
+        
         if (selectedPlayer && selectedPlayer.id === playerObj.id){
             setSelectedPlayer(null)
             setSelectedPlayer2(null)
@@ -94,7 +105,7 @@ function CurrentTeam(){
             setBenchDefDisable(false)
             setBenchMidDisable(false)
             setBenchFwDisable(false)
-        } else if (!selectedPlayer) { // if first player is selected
+        } else if (!selectedPlayer && playerType.split("_")[1] !== "bench") { // if first player is selected
             setSelectedPlayer(playerObj)
             setSelectedPlayer2(null)
             if (playerType === "gk"){
@@ -106,26 +117,29 @@ function CurrentTeam(){
                 setBenchFwDisable(true)
             } else if (playerType === "def"){ // if player selects a starting defender AND there is only 1 defender in the starting squad....
                 setGkDisable(true)
+                setDefDisable(true)
+                setMidDisable(true)
+                setFwDisable(true)
                 if (Object.keys(team.def).length === 1){
-                    setMidDisable(true)
-                    setFwDisable(true)
                     setBenchMidDisable(true)
                     setBenchFwDisable(true)
                 }
 
             } else if (playerType === "mid"){
                 setGkDisable(true)
+                setMidDisable(true)
+                setDefDisable(true)
+                setFwDisable(true)
                 if (Object.keys(team.mid).length === 1){
-                    setDefDisable(true)
-                    setFwDisable(true)
                     setBenchDefDisable(true)
                     setBenchFwDisable(true)
                 }
             } else if (playerType === "fw"){
                 setGkDisable(true)
+                setFwDisable(true)
+                setDefDisable(true)
+                setMidDisable(true)
                 if (Object.keys(team.fw).length === 1){
-                    setDefDisable(true)
-                    setMidDisable(true)
                     setBenchDefDisable(true)
                     setBenchMidDisable(true)
                 }
@@ -142,7 +156,8 @@ function CurrentTeam(){
         .then((response) => {
             //console.log(response.data);
             const { gk, def, mid, fw, bench } = response.data;
-            setTeam({ gk, def, mid, fw, bench })
+            //let mid1 = [...mid, bench[0]]
+            setTeam({ "gk": gk, "def": def, "mid": mid, "fw": fw, "bench": bench })
         })
         .catch((error) => {
             console.log(error);
@@ -212,18 +227,34 @@ function CurrentTeam(){
     }, [selectedPlayer])
 
     useEffect(() => {
-        //console.log(selectedPlayer2 ? "player2: " + selectedPlayer2.short_name : "nothing selected (player2)")
-        // console.log(selectedPlayer2?.pos ? selectedPlayer2.pos : "nothing selected (pos2)")
-        let player1Type;
-        let player2Type; // store the types of each player subsituted so we can access the relevant state variables
+        if (selectedPlayer && selectedPlayer2){
+            let player1pos = selectedPlayer.isBenched ? "bench" : posToAbbr(selectedPlayer.pos)
+            let player2pos = selectedPlayer2.isBenched ? "bench" : posToAbbr(selectedPlayer2.pos)
 
-        let player1pos = selectedPlayer ? posToAbbr(selectedPlayer.pos) : null;
-        let player2pos = selectedPlayer2 ? posToAbbr(selectedPlayer2.pos) : null;
-        if (selectedPlayer2){
-            console.log(selectedPlayer.short_name + " switched with " + selectedPlayer2.short_name)
-            //if (player1pos === "gk")
+            if (player1pos === "bench" || player2pos === "bench"){
+                let payload = {
+                    "player_subbed_on": selectedPlayer.isBenched ? selectedPlayer.id : selectedPlayer2.id,
+                    "player_subbed_off": selectedPlayer.isBenched ? selectedPlayer2.id : selectedPlayer.id
+                }
+
+                axios.post(`${backendUrl}/team/substitute`, payload, { withCredentials: true })
+                .then((response) => {
+                    console.log(response)
+                })
+                .finally( () => {
+                    console.log(payload)
+                    setSelectedPlayer(null);
+                    setSelectedPlayer2(null);
+                    enableAllButtons();
+                    fetchTeam();
+                })
+
+
+            }
+
+
         }
-    }, [selectedPlayer2])
+    }, [selectedPlayer2, team])
 
 
     return (
@@ -231,7 +262,7 @@ function CurrentTeam(){
             <Paper elevation={3} style={{ padding: 20, width: 400, height: 50, backgroundColor: theme.palette.primary.main, display: 'flex', flexDirection: "column", alignItems: 'center', justifyContent: 'center'}}>
                 { 
                     subMode ? (
-                        <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>[ Edit Mode ]</Typography> 
+                        <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>[ Make a Substitute ]</Typography> 
                     ) : (
                         <>
                             <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>Gameweek: {gameweek}</Typography>
@@ -298,6 +329,7 @@ function CurrentTeam(){
                                 )
                             })}
                         </Stack>
+                        <Typography variant="caption" style={{ color: alpha(theme.palette.secondary.main, 0.7) }}>Hint: Click a starting player to make a subsitution</Typography>
                     </Stack>
                     
                 </Paper>

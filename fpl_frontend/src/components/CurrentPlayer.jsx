@@ -12,8 +12,8 @@ function CurrentPlayer(props){
     }
 
     const StyledButton = styled(Button)(({ theme }) => ({
-        color: isDisabled ? alpha(theme.palette.secondary.main, 0.5) : theme.palette.secondary.main, // Set the color of the text and the outline
-        borderColor: isDisabled ? alpha(theme.palette.secondary.main, 0.5) : theme.palette.secondary.main,
+        color: isDisabled && !isSelected ? alpha(theme.palette.secondary.main, 0.5) : theme.palette.secondary.main, // Set the color of the text and the outline
+        borderColor: isDisabled && !isSelected ? alpha(theme.palette.secondary.main, 0.5) : theme.palette.secondary.main,
         backgroundColor: isSelected ? alpha(theme.palette.secondary.main, 0.5) : 'transparent', // Set the background color to transparent
         '&:hover': isSelected ? {
             borderColor: theme.palette.secondary.main,
@@ -29,7 +29,7 @@ function CurrentPlayer(props){
         justifyContent: 'center', // Center the text horizontally
         alignItems: 'flex-end', // Position the text at the bottom
         paddingBottom: '10px', // Add some padding at the bottom to give the text some space
-        pointerEvents: isDisabled ? 'none' : ''
+        pointerEvents: isDisabled && !isSelected ? 'none' : ''
       }));
 
     const posAbbreviation = (player) => {
