@@ -11,7 +11,7 @@ These instructions assume you are using VS Code, and already have NodeJS install
 
 2. Clone the repository: ```git clone https://github.com/Haroon01/FPL_App.git```
 
-3. Install the node packages used: ```npm install```
+3. Install node packages for backend ```cd ./fpl_backend``` then ```npm install``` (do the same for frontend ```cd ./fpl_frontend```)
 
 4. Using ```.env.example``` create an environment file and fill out the variables. The database details are used for the production build
 
