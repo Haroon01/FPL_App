@@ -2,6 +2,7 @@ const express = require('express');
 const authentication = require('../middleware/authentication');
 const router = express.Router();
 const { Sequelize } = require("sequelize");
+const sequelize = require("../database")
 
 const UserSquad = require('../models/UserSquad');
 const User = require('../models/User');
@@ -198,4 +199,49 @@ router.get("/getcurrent", authentication, async (req, res) => {
         res.status(500).send("Error occured while fetching current team!")
     }
 });
+
+router.post("/substitute", authentication, async (req, res) => {
+    const { player_subbed_on, player_subbed_off } = req.body;
+    const username = req.user.username;
+    const transaction = await sequelize.transaction();
+    try {
+        const user = await User.findOne({ where: { username: username } });
+        if (!user){
+            return res.status(404).send("User not found!")
+        }
+        const userSquad = await UserSquad.findOne({ where: { userId: user.id } });
+        if (!userSquad){
+            return res.status(404).send("Squad not found!")
+        }
+
+        // Find the UserStartingPlayers record for the player being subbed off
+        const playerSubbedOff = await UserStartingPlayers.findOne({
+            where: { userId: user.id, playerId: player_subbed_off }
+        });
+
+        // Find the UserStartingPlayers record for the player being subbed on
+        const playerSubbedOn = await UserStartingPlayers.findOne({
+            where: { userId: user.id, playerId: player_subbed_on }
+        });
+
+        if (!playerSubbedOff || !playerSubbedOn) {
+            return res.status(404).send("Player IDs were not found!")
+        }
+        // Swap the isBenched status of the two players
+        playerSubbedOff.set("isBenched", true)
+        playerSubbedOn.set("isBenched", false)
+
+        // Save the changes
+        await playerSubbedOff.save();
+        await playerSubbedOn.save();
+
+        await transaction.commit();
+        res.status(200).json({ message: "Subsitute successful" });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Error occured while substituting players!")
+    }
+    
+})
 module.exports = router;

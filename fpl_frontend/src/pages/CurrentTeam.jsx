@@ -19,26 +19,45 @@ function CurrentTeam(){
     const handleCloseModal = () => setIsModalOpen(false);
     const [duplicateSnackbar, setDuplicateSnackbar] = useState(false);
     const [teamSavedSnackbar, setTeamSavedSnackbar] = useState(false);
-    const [selectedPlayerIndex, setSelectedPlayerIndex] = useState(null);
-    const [gk, setgk] = useState([]);
-    const [def, setdef] = useState([]);
-    const [mid, setmid] = useState([]);
-    const [fw, setfw] = useState([]);
-    const [bench, setBench] = useState([]);
+    const [selectedPlayer, setSelectedPlayer] = useState(null); // the first player the user clicks for subsitution
+    const [selectedPlayer2, setSelectedPlayer2] = useState(null); // second player the user selects to subsitute
+    // const [gk, setgk] = useState([]);
+    // const [def, setdef] = useState([]);
+    // const [mid, setmid] = useState([]);
+    // const [fw, setfw] = useState([]);
+    // const [bench, setBench] = useState([]);
+    const [team, setTeam] = useState({
+        "gk": [],
+        "def": [],
+        "mid": [],
+        "fw": [],
+        "bench": []
+    })
     const [score, setScore] = useState(0);
     const [gameweek, setGameweek] = useState("");
+    const [subMode, setSubMode] = useState(false);
 
-    const StyledButton = styled(Button)(({ theme }) => ({
-        color: theme.palette.secondary.main, // Set the color of the text and the outline
-        borderColor: theme.palette.secondary.main,
-        backgroundColor: 'transparent', // Set the background color to transparent
-        '&:hover': {
-          backgroundColor: alpha(theme.palette.secondary.main, 0.1), // Keep the background color transparent when hovered
-          borderColor: theme.palette.secondary.main,
-        },
-        height: 100,
-        width: 50
-      }));
+    const [gkDisable, setGkDisable] = useState(false); // these are used to disable buttons for players ineligible to be subsituted
+    const [defDisable, setDefDisable] = useState(false);
+    const [midDisable, setMidDisable] = useState(false);
+    const [fwDisable, setFwDisable] = useState(false);
+    const [benchDefDisable, setBenchDefDisable] = useState(false)
+    const [benchMidDisable, setBenchMidDisable] = useState(false)
+    const [benchFwDisable, setBenchFwDisable] = useState(false)
+
+
+
+    // const StyledButton = styled(Button)(({ theme }) => ({
+    //     color: theme.palette.secondary.main, // Set the color of the text and the outline
+    //     borderColor: theme.palette.secondary.main,
+    //     backgroundColor: 'transparent', // Set the background color to transparent
+    //     '&:hover': {
+    //       backgroundColor: alpha(theme.palette.secondary.main, 0.1), // Keep the background color transparent when hovered
+    //       borderColor: theme.palette.secondary.main,
+    //     },
+    //     height: 100,
+    //     width: 50
+    //   }));
 
     const DuplicateSnackbarComponent = (
         <CustomSnackbar
@@ -59,9 +78,77 @@ function CurrentTeam(){
     )
 
 
-    function handleClick(playerType, index){
-        console.log("subsitutions not implemented yet")
-        // handle subsitutions
+    const enableAllButtons = () => {
+        setGkDisable(false)
+        setDefDisable(false)
+        setMidDisable(false)
+        setFwDisable(false)
+        setBenchDefDisable(false)
+        setBenchMidDisable(false)
+        setBenchFwDisable(false)
+    }
+
+
+
+    function handleClick(playerType, index, playerObj){
+        //console.log(playerType)
+        // if player is deselected
+        
+        if (selectedPlayer && selectedPlayer.id === playerObj.id){
+            setSelectedPlayer(null)
+            setSelectedPlayer2(null)
+            // re-enable the buttons
+            setGkDisable(false)
+            setDefDisable(false)
+            setMidDisable(false)
+            setFwDisable(false)
+            setBenchDefDisable(false)
+            setBenchMidDisable(false)
+            setBenchFwDisable(false)
+        } else if (!selectedPlayer && playerType.split("_")[1] !== "bench") { // if first player is selected
+            setSelectedPlayer(playerObj)
+            setSelectedPlayer2(null)
+            if (playerType === "gk"){
+                setDefDisable(true);
+                setMidDisable(true);
+                setFwDisable(true);
+                setBenchDefDisable(true)
+                setBenchMidDisable(true)
+                setBenchFwDisable(true)
+            } else if (playerType === "def"){ // if player selects a starting defender AND there is only 1 defender in the starting squad....
+                setGkDisable(true)
+                setDefDisable(true)
+                setMidDisable(true)
+                setFwDisable(true)
+                if (Object.keys(team.def).length === 1){
+                    setBenchMidDisable(true)
+                    setBenchFwDisable(true)
+                }
+
+            } else if (playerType === "mid"){
+                setGkDisable(true)
+                setMidDisable(true)
+                setDefDisable(true)
+                setFwDisable(true)
+                if (Object.keys(team.mid).length === 1){
+                    setBenchDefDisable(true)
+                    setBenchFwDisable(true)
+                }
+            } else if (playerType === "fw"){
+                setGkDisable(true)
+                setFwDisable(true)
+                setDefDisable(true)
+                setMidDisable(true)
+                if (Object.keys(team.fw).length === 1){
+                    setBenchDefDisable(true)
+                    setBenchMidDisable(true)
+                }
+            }
+        } else if (selectedPlayer && !selectedPlayer2){ // if the second player is selected
+            if (selectedPlayer.id !== playerObj.id) {
+                setSelectedPlayer2(playerObj)
+            }
+        }
     }
 
     const fetchTeam = () => {
@@ -69,11 +156,8 @@ function CurrentTeam(){
         .then((response) => {
             //console.log(response.data);
             const { gk, def, mid, fw, bench } = response.data;
-            setgk(gk);
-            setdef(def);
-            setmid(mid);
-            setfw(fw);
-            setBench(bench); // continue from here! players are set in teh state. need to amend currentTeam layout with a bench and display players
+            //let mid1 = [...mid, bench[0]]
+            setTeam({ "gk": gk, "def": def, "mid": mid, "fw": fw, "bench": bench })
         })
         .catch((error) => {
             console.log(error);
@@ -84,10 +168,10 @@ function CurrentTeam(){
     }
 
     const calculatePoints = () => { // need to move this to backend.
-        console.log("calculatePoints() running")
+        //console.log("calculatePoints() running")
         let points = 0;
-        let startingTeam = [...gk, ...def, ...mid, ...fw];
-        console.log(startingTeam)
+        let startingTeam = [...team.gk, ...team.def, ...team.mid, ...team.fw];
+        //console.log(startingTeam)
         for (let player of startingTeam){
             points += player.points;
         }
@@ -105,6 +189,21 @@ function CurrentTeam(){
     
     }
 
+    // converts position from playerObj to abbreviated form. e.g. "Goalkeeper" -> "gk"
+    const posToAbbr = (pos) => { // do not delete this, it is used all over this page
+        //console.log("posToAbbr: " + pos)
+        switch(pos){
+            case "Goalkeeper":
+                return "gk"
+            case "Defender":
+                return "def"
+            case "Midfielder":
+                return "mid"
+            case "Forward":
+                return "fw"
+        }
+    }
+
     useEffect(() => {
         fetchTeam();
         getGameweek();
@@ -114,12 +213,64 @@ function CurrentTeam(){
     useEffect(() => {
         // Runs whenever one of these dependencies changes
         calculatePoints();
-    }, [gk, def, mid, fw]);
+    }, [team.gk, team.def, team.mid, team.fw]);
+
+    useEffect(() => {
+        //console.log(selectedPlayer ? "player1: " + selectedPlayer.short_name : "nothing selected (player)")
+        // console.log(selectedPlayer?.pos ? selectedPlayer.pos : "nothing selected (pos)")
+
+        if (selectedPlayer){
+            setSubMode(true)
+        } else {
+            setSubMode(false)
+        }
+    }, [selectedPlayer])
+
+    useEffect(() => {
+        if (selectedPlayer && selectedPlayer2){
+            let player1pos = selectedPlayer.isBenched ? "bench" : posToAbbr(selectedPlayer.pos)
+            let player2pos = selectedPlayer2.isBenched ? "bench" : posToAbbr(selectedPlayer2.pos)
+
+            if (player1pos === "bench" || player2pos === "bench"){
+                let payload = {
+                    "player_subbed_on": selectedPlayer.isBenched ? selectedPlayer.id : selectedPlayer2.id,
+                    "player_subbed_off": selectedPlayer.isBenched ? selectedPlayer2.id : selectedPlayer.id
+                }
+
+                axios.post(`${backendUrl}/team/substitute`, payload, { withCredentials: true })
+                .then((response) => {
+                    console.log(response)
+                })
+                .finally( () => {
+                    console.log(payload)
+                    setSelectedPlayer(null);
+                    setSelectedPlayer2(null);
+                    enableAllButtons();
+                    fetchTeam();
+                })
+
+
+            }
+
+
+        }
+    }, [selectedPlayer2, team])
+
+
     return (
         <Stack direction="column" spacing={1} alignItems="center" style={{ position: 'absolute', top: '10%', width: '100%' }}>
             <Paper elevation={3} style={{ padding: 20, width: 400, height: 50, backgroundColor: theme.palette.primary.main, display: 'flex', flexDirection: "column", alignItems: 'center', justifyContent: 'center'}}>
-                <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>Gameweek: {gameweek}</Typography>
-                <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>Points: {score}</Typography>
+                { 
+                    subMode ? (
+                        <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>[ Make a Substitute ]</Typography> 
+                    ) : (
+                        <>
+                            <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>Gameweek: {gameweek}</Typography>
+                            <Typography variant="h6" style={{ color: theme.palette.secondary.main }}>Points: {score}</Typography>
+                        </>
+                    )
+                }
+
             </Paper>
             <Container component="main" maxWidth="xs" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70vh', flexDirection: 'column' }}>
                 {DuplicateSnackbarComponent}
@@ -128,39 +279,57 @@ function CurrentTeam(){
                     <Stack direction="column" spacing={2} alignItems="center">
                         {/** Goalkeepers */}
                         <Stack direction="row" spacing={2} justifyContent="center">
-                            {gk.map((player, index) => (
-                                <CurrentPlayer playerData={player} handleClick={() => {handleClick('gk', index)}} />
+                            {team.gk.map((player, index) => (
+                                <CurrentPlayer key={player.id} isSelected={selectedPlayer?.id === player.id} isDisabled={gkDisable} playerData={player} handleClick={() => {handleClick(posToAbbr(player.pos), index, player)}} />
                             ))}
                         </Stack>
 
                         {/** Defenders */}
                         <Stack direction="row" spacing={2} justifyContent="center">
-                            {def.map((player, index) => (
-                                <CurrentPlayer playerData={player} handleClick={() => {handleClick('def', index)}} />
+                            {team.def.map((player, index) => (
+                                <CurrentPlayer key={player.id} isSelected={selectedPlayer?.id === player.id} isDisabled={defDisable} playerData={player} handleClick={() => {handleClick(posToAbbr(player.pos), index, player)}} />
                             ))}
                         </Stack>
 
                         {/** Midfielders */}
                         <Stack direction="row" spacing={2} justifyContent="center">
-                            {mid.map((player, index) => (
-                                <CurrentPlayer playerData={player} handleClick={() => {handleClick('mid', index)}} />
+                            {team.mid.map((player, index) => (
+                                <CurrentPlayer key={player.id} isSelected={selectedPlayer?.id === player.id} isDisabled={midDisable} playerData={player} handleClick={() => {handleClick(posToAbbr(player.pos), index, player)}} />
                             ))}
                         </Stack>
 
                         {/** Strikers/Forwards */}
                         <Stack direction="row" spacing={2} justifyContent="center">
-                            {fw.map((player, index) => (
-                                <CurrentPlayer playerData={player} handleClick={() => {handleClick('fw', index)}} />
+                            {team.fw.map((player, index) => (
+                                <CurrentPlayer key={player.id} isSelected={selectedPlayer?.id === player.id} isDisabled={fwDisable} playerData={player} handleClick={() => {handleClick(posToAbbr(player.pos), index, player)}} />
                             ))}
                         </Stack>
 
                         <Divider orientation="horizontal" style={{ backgroundColor: theme.palette.secondary.main, width: "100%" }}/>
                         {/** Bench */}
                         <Stack direction="row" spacing={2} justifyContent="center">
-                            {bench.map((player, index) => (
-                                <CurrentPlayer playerData={player} handleClick={() => {handleClick('fw', index)}} />
-                            ))}
+                            {team.bench.map((player, index) => {
+                                let disableProp; // since i cant build a dynamic varibale, i will use a switch case
+                                switch(posToAbbr(player.pos)){
+                                    case "gk":
+                                        disableProp = gkDisable
+                                        break;
+                                    case "def":
+                                        disableProp = benchDefDisable;
+                                        break;
+                                    case "mid":
+                                        disableProp = benchMidDisable;
+                                        break;
+                                    case "fw":
+                                        disableProp = benchFwDisable;
+                                }
+
+                                return (
+                                    <CurrentPlayer key={player.id} isSelected={selectedPlayer?.id === player.id} isDisabled={disableProp} playerData={player} handleClick={() => {handleClick(posToAbbr(player.pos) + "_bench", index, player)}} />
+                                )
+                            })}
                         </Stack>
+                        <Typography variant="caption" style={{ color: alpha(theme.palette.secondary.main, 0.7) }}>Hint: Click a starting player to make a subsitution</Typography>
                     </Stack>
                     
                 </Paper>
