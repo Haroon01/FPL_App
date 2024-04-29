@@ -16,6 +16,7 @@ function Team(){
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
     const [duplicateSnackbar, setDuplicateSnackbar] = useState(false);
+    const [teamIncompleteSnackbar, setTeamIncompleteSnackbar] = useState(false);
     const [teamSavedSnackbar, setTeamSavedSnackbar] = useState(false);
     const [selectedPlayerIndex, setSelectedPlayerIndex] = useState(null);
     const [selectedGk, setSelectedGk] = useState([null, null]);
@@ -50,6 +51,15 @@ function Team(){
             handleCloseSnackbar={() => {setTeamSavedSnackbar(false)}}
             severity="success"
             message="Your team has been saved!"
+        />
+    )
+
+    const TeamIncompleteSnackbarComponent = (
+        <CustomSnackbar
+            open={teamIncompleteSnackbar}
+            handleCloseSnackbar={() => {setTeamIncompleteSnackbar(false)}}
+            severity="error"
+            message="You are missing some players!"
         />
     )
 
@@ -113,6 +123,7 @@ function Team(){
         const hasNull = newTeamData.some(arr => arr.some(player => player === null));
         if (hasNull) {
             console.log("team isnt complete")
+            setTeamIncompleteSnackbar(true)
         } else {
             axios.post(`${backendUrl}/team/newteam/save`, newTeamData, { withCredentials: true })
             .then((response) => {
@@ -152,6 +163,7 @@ function Team(){
             <Button variant="contained" color="secondary" style={{ margin: '10px', width: '100%' }} onClick={handleSaveBtnClick}>Save Team</Button>
             {DuplicateSnackbarComponent}
             {TeamSavedSnackbarComponent}
+            {TeamIncompleteSnackbarComponent}
             <Paper elevation={3} style={{ padding: 16, width: 400, height: 500, backgroundColor: theme.palette.primary.main}}>
                 <Stack direction="column" spacing={2} alignItems="center">
                     {/** Goalkeepers */}
